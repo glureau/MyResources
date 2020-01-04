@@ -9,13 +9,13 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_bool" />
         <item
+            android:id="@+id/nav_color"
+            android:icon="@color/colorPrimaryDark"
+            android:title="@string/menu_color" />
+        <item
             android:id="@+id/nav_drawable"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_drawable" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
         <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/ic_menu_manage"

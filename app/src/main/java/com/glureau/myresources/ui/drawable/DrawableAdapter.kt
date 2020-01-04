@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
+import com.glureau.myresources.core.toHex
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
 class DrawableAdapter :
@@ -31,7 +32,7 @@ class DrawableAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val res = getItem(position)
         holder.itemDrawableView.setImageResource(res.resId)
-        holder.itemDrawableName.text = "${res.resName} (#${res.resId.toString(16)})"
+        holder.itemDrawableName.text = "${res.resName} (#${res.resId.toHex()})"
         val drawable = holder.itemDrawableView.drawable
         holder.itemDrawableSize.text =
             "Size: " + (if (drawable is BitmapDrawable) drawable.bitmap.allocationByteCount else "???")

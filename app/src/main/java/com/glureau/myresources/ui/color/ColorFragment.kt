@@ -1,4 +1,4 @@
-package com.glureau.myresources.ui.drawable
+package com.glureau.myresources.ui.color
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,23 +9,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResourceAnalyser
 
-class DrawableFragment : Fragment() {
+class ColorFragment : Fragment() {
 
-    private val drawableAdapter by lazy { DrawableAdapter() }
+
+    private val colorAdapter by lazy { ColorAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_drawable, container, false)
-        val recyclerView: RecyclerView = root.findViewById(R.id.drawable_list)
-        recyclerView.adapter = drawableAdapter
+        val root = inflater.inflate(R.layout.fragment_color, container, false)
+        val recyclerView: RecyclerView = root.findViewById(R.id.color_list)
+        recyclerView.adapter = colorAdapter
         return root
     }
 
     override fun onResume() {
         super.onResume()
-        drawableAdapter.submitList(ResourceAnalyser.drawables)
+        colorAdapter.submitList(ResourceAnalyser.colors)
     }
 }

@@ -3,6 +3,7 @@ package com.glureau.myresources.core
 import android.content.Context
 import android.util.Log
 import com.glureau.myresources.core.types.bool.BoolRes
+import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
@@ -10,43 +11,42 @@ import java.lang.reflect.Field
 
 object ResourceAnalyser {
 
-    //val anims = mutableMapOf<String, Any>()
-    //val animators = mutableMapOf<String, Any>()
-    val bools = mutableMapOf<String, BoolRes>()
-    val colors = mutableMapOf<String, Any>()
-    val dimens = mutableMapOf<String, Any>()
-    val drawables = mutableMapOf<String, DrawableRes>()
-    val ids = mutableMapOf<String, Any>()
-    val interpolators = mutableMapOf<String, Any>()
-    val layouts = mutableMapOf<String, Any>()
-    val menus = mutableMapOf<String, Any>()
-    val mipmaps = mutableMapOf<String, Any>()
-    val navigations = mutableMapOf<String, Any>()
-    val strings = mutableMapOf<String, Any>()
-    val styles = mutableMapOf<String, Any>()
-    val styleables = mutableMapOf<String, Any>()
+    //val anims = mutableListOf<Any>()
+    //val animators = mutableListOf<Any>()
+    val bools = mutableListOf<BoolRes>()
+    val colors = mutableListOf<ColorRes>()
+    val dimens = mutableListOf<Any>()
+    val drawables = mutableListOf<DrawableRes>()
+    //val ids = mutableListOf<Any>()
+    //val interpolators = mutableListOf<Any>()
+    //val layouts = mutableListOf<Any>()
+    //val menus = mutableListOf<Any>()
+    //val mipmaps = mutableListOf<Any>()
+    //val navigations = mutableListOf<Any>()
+    //val strings = mutableListOf<Any>()
+    //val styles = mutableListOf<Any>()
+    //val styleables = mutableListOf<Any>()
 
     fun init(appContext: Context, packageName: String) {
-        Log.e("MyResources", "---------------------------------")
+        Log.e("MyResources", "--------------------------------- START")
         getDexFiles(appContext).flatMap { it.entries().asSequence() }
             .filter { it.startsWith(packageName) && it.contains(".R$") }
             .map { appContext.classLoader.loadClass(it) }
             .forEach { internalClass ->
                 when (internalClass.simpleName) {
-                    "drawable" -> internalClass.fields.forEach {
-                        drawables[it.name] = DrawableRes(appContext, packageName, it.name)
-                    }
                     "bool" -> internalClass.fields.forEach {
-                        bools[it.name] = BoolRes(appContext, packageName, it.name)
+                        bools += BoolRes(appContext, packageName, it.name)
+                    }
+                    "color" -> internalClass.fields.forEach {
+                        colors += ColorRes(appContext, packageName, it.name)
+                    }
+                    "drawable" -> internalClass.fields.forEach {
+                        drawables += DrawableRes(appContext, packageName, it.name)
                     }
                 }
             }
-
-        Log.e("MyResources", "---------------------------------")
-        Log.e(
-            "MyResources",
-            "drawables=${drawables.toList().joinToString("\n") { it.second.print(appContext) }}"
-        )
+        colors.sortByDescending { it.hue }
+        Log.e("MyResources", "--------------------------------- READY")
     }
 
     private fun getDexFiles(context: Context): Sequence<DexFile> {

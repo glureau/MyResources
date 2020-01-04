@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
+import com.glureau.myresources.core.toHex
 import com.glureau.myresources.core.types.bool.BoolRes
 
 class BoolAdapter : ListAdapter<BoolRes, BoolAdapter.ViewHolder>(BoolRes.DiffCallback) {
@@ -32,6 +33,6 @@ class BoolAdapter : ListAdapter<BoolRes, BoolAdapter.ViewHolder>(BoolRes.DiffCal
         holder.itemSwitch.isEnabled = res.value != null
         holder.itemSwitch.isClickable = false
 
-        holder.itemName.text = "${res.resName} (#${res.resId.toString(16)})"
+        holder.itemName.text = "${res.resName} (#${res.resId.toHex()})"
     }
 }

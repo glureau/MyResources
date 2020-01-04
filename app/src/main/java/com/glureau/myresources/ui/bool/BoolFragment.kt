@@ -24,8 +24,9 @@ class BoolFragment : Fragment() {
         recyclerView.adapter = boolAdapter
         return root
     }
+
     override fun onResume() {
         super.onResume()
-        boolAdapter.submitList(ResourceAnalyser.bools.values.toList())
+        boolAdapter.submitList(ResourceAnalyser.bools)
     }
 }
