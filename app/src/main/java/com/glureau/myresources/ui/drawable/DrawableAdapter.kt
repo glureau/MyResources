@@ -1,5 +1,6 @@
 package com.glureau.myresources.ui.drawable
 
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class DrawableAdapter :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemDrawableView: ImageView by lazy { itemView.findViewById<ImageView>(R.id.item_drawable_view) }
         val itemDrawableName: TextView by lazy { itemView.findViewById<TextView>(R.id.item_drawable_name) }
-        val itemDrawableId: TextView by lazy { itemView.findViewById<TextView>(R.id.item_drawable_id) }
+        val itemDrawableSize: TextView by lazy { itemView.findViewById<TextView>(R.id.item_drawable_size) }
         val itemDrawableDimension: TextView by lazy { itemView.findViewById<TextView>(R.id.item_drawable_dimension) }
     }
 
@@ -30,9 +31,10 @@ class DrawableAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val res = getItem(position)
         holder.itemDrawableView.setImageResource(res.resId)
-        holder.itemDrawableName.text = res.resName
-        holder.itemDrawableId.text = "Id: " + res.resId
+        holder.itemDrawableName.text = "${res.resName} (#${res.resId.toString(16)})"
         val drawable = holder.itemDrawableView.drawable
+        holder.itemDrawableSize.text =
+            "Size: " + (if (drawable is BitmapDrawable) drawable.bitmap.allocationByteCount else "???")
         holder.itemDrawableDimension.text =
             drawable::class.java.simpleName + " (" + drawable.intrinsicWidth + "x" + drawable.intrinsicHeight + ")"
     }

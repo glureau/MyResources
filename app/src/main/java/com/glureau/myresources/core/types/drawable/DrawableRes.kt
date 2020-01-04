@@ -5,9 +5,9 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
-class DrawableRes(
-    appContext: Context,
-    packageName: String,
+data class DrawableRes(
+    val appContext: Context,
+    val packageName: String,
     val resName: String
 ) {
     object DiffCallback : DiffUtil.ItemCallback<DrawableRes>() {

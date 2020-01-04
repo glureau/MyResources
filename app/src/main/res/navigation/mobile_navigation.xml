@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_drawable" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.glureau.myresources.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_bool"
+        android:name="com.glureau.myresources.ui.bool.BoolFragment"
+        android:label="@string/menu_bool"
+        tools:layout="@layout/fragment_bool" />
 
     <fragment
         android:id="@+id/nav_slideshow"

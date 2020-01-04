@@ -1,6 +1,7 @@
 package com.glureau.myresources
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_drawable, R.id.nav_gallery, R.id.nav_slideshow,
+                R.id.nav_drawable, R.id.nav_bool, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send
             ), drawerLayout
         )
@@ -45,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         ResourceAnalyser.init(applicationContext, "com.glureau.myresources")
+
+        drawerLayout.openDrawer(Gravity.LEFT)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

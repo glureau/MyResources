@@ -2,6 +2,7 @@ package com.glureau.myresources.core
 
 import android.content.Context
 import android.util.Log
+import com.glureau.myresources.core.types.bool.BoolRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
@@ -9,21 +10,21 @@ import java.lang.reflect.Field
 
 object ResourceAnalyser {
 
-    val anim = mutableMapOf<String, Any>()
-    val animator = mutableMapOf<String, Any>()
-    val bool = mutableMapOf<String, Any>()
-    val color = mutableMapOf<String, Any>()
-    val dimen = mutableMapOf<String, Any>()
+    //val anims = mutableMapOf<String, Any>()
+    //val animators = mutableMapOf<String, Any>()
+    val bools = mutableMapOf<String, BoolRes>()
+    val colors = mutableMapOf<String, Any>()
+    val dimens = mutableMapOf<String, Any>()
     val drawables = mutableMapOf<String, DrawableRes>()
-    val id = mutableMapOf<String, Any>()
-    val interpolator = mutableMapOf<String, Any>()
-    val layout = mutableMapOf<String, Any>()
-    val menu = mutableMapOf<String, Any>()
-    val mipmap = mutableMapOf<String, Any>()
-    val navigation = mutableMapOf<String, Any>()
-    val string = mutableMapOf<String, Any>()
-    val style = mutableMapOf<String, Any>()
-    val styleable = mutableMapOf<String, Any>()
+    val ids = mutableMapOf<String, Any>()
+    val interpolators = mutableMapOf<String, Any>()
+    val layouts = mutableMapOf<String, Any>()
+    val menus = mutableMapOf<String, Any>()
+    val mipmaps = mutableMapOf<String, Any>()
+    val navigations = mutableMapOf<String, Any>()
+    val strings = mutableMapOf<String, Any>()
+    val styles = mutableMapOf<String, Any>()
+    val styleables = mutableMapOf<String, Any>()
 
     fun init(appContext: Context, packageName: String) {
         Log.e("MyResources", "---------------------------------")
@@ -34,6 +35,9 @@ object ResourceAnalyser {
                 when (internalClass.simpleName) {
                     "drawable" -> internalClass.fields.forEach {
                         drawables[it.name] = DrawableRes(appContext, packageName, it.name)
+                    }
+                    "bool" -> internalClass.fields.forEach {
+                        bools[it.name] = BoolRes(appContext, packageName, it.name)
                     }
                 }
             }
