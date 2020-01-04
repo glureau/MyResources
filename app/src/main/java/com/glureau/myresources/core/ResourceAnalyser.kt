@@ -15,7 +15,7 @@ object ResourceAnalyser {
     //val animators = mutableListOf<Any>()
     val bools = mutableListOf<BoolRes>()
     val colors = mutableListOf<ColorRes>()
-    val dimens = mutableListOf<Any>()
+    //val dimens = mutableListOf<Any>()
     val drawables = mutableListOf<DrawableRes>()
     //val ids = mutableListOf<Any>()
     //val interpolators = mutableListOf<Any>()

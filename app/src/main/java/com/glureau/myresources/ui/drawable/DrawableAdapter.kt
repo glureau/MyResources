@@ -1,6 +1,7 @@
 package com.glureau.myresources.ui.drawable
 
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +34,15 @@ class DrawableAdapter :
         val res = getItem(position)
         holder.itemDrawableView.setImageResource(res.resId)
         holder.itemDrawableName.text = "${res.resName} (#${res.resId.toHex()})"
-        val drawable = holder.itemDrawableView.drawable
+        val drawable: Drawable? = holder.itemDrawableView.drawable
         holder.itemDrawableSize.text =
             "Size: " + (if (drawable is BitmapDrawable) drawable.bitmap.allocationByteCount else "???")
-        holder.itemDrawableDimension.text =
-            drawable::class.java.simpleName + " (" + drawable.intrinsicWidth + "x" + drawable.intrinsicHeight + ")"
+        if (drawable != null) {
+            holder.itemDrawableDimension.text =
+                drawable::class.java.simpleName + " (" + drawable.intrinsicWidth + "x" + drawable.intrinsicHeight + ")"
+        } else {
+            holder.itemDrawableDimension.text = "(no drawable)"
+        }
     }
 
 }

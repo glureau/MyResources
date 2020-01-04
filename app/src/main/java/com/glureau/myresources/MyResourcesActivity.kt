@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
-class MainActivity : AppCompatActivity() {
+class MyResourcesActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        ResourceAnalyser.init(applicationContext, "com.glureau.myresources")
+        ResourceAnalyser.init(applicationContext, "com.google.android.apps.santatracker")
 
         drawerLayout.openDrawer(Gravity.LEFT)
     }
