@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.toHex
+import com.glureau.myresources.core.types.BaseResDiffCallback
 import com.glureau.myresources.core.types.color.ColorRes
 
-class ColorAdapter : ListAdapter<ColorRes, ColorAdapter.ViewHolder>(ColorRes.DiffCallback) {
+class ColorAdapter : ListAdapter<ColorRes, ColorAdapter.ViewHolder>(BaseResDiffCallback()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemColor: ImageView by lazy { itemView.findViewById<ImageView>(R.id.item_color_view) }

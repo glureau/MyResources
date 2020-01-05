@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.toHex
+import com.glureau.myresources.core.toHumanByteCount
+import com.glureau.myresources.core.types.BaseResDiffCallback
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
 class DrawableAdapter :
-    ListAdapter<DrawableRes, DrawableAdapter.ViewHolder>(DrawableRes.DiffCallback) {
+    ListAdapter<DrawableRes, DrawableAdapter.ViewHolder>(BaseResDiffCallback()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemDrawableView: ImageView by lazy { itemView.findViewById<ImageView>(R.id.item_drawable_view) }
@@ -36,7 +38,7 @@ class DrawableAdapter :
         holder.itemDrawableName.text = "${res.resName} (#${res.resId.toHex()})"
         val drawable: Drawable? = holder.itemDrawableView.drawable
         holder.itemDrawableSize.text =
-            "Size: " + (if (drawable is BitmapDrawable) drawable.bitmap.allocationByteCount else "???")
+            "Size: " + (if (drawable is BitmapDrawable) drawable.bitmap.allocationByteCount.toHumanByteCount() else "N/A (not a bitmap)")
         if (drawable != null) {
             holder.itemDrawableDimension.text =
                 drawable::class.java.simpleName + " (" + drawable.intrinsicWidth + "x" + drawable.intrinsicHeight + ")"

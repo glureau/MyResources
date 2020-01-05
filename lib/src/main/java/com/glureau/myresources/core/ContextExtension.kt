@@ -2,12 +2,6 @@ package com.glureau.myresources.core
 
 import android.content.Context
 
-enum class ResourceDefType(val typeName: String) {
-    Bool("bool"),
-    Color("color"),
-    Drawable("drawable")
-}
-
 fun Context.getIdentifier(resName: String, type: ResourceDefType) =
     getIdentifier(resName, type, packageName)
 

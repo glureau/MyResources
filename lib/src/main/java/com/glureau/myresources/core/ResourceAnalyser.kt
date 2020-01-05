@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.glureau.myresources.core.types.bool.BoolRes
 import com.glureau.myresources.core.types.color.ColorRes
+import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
@@ -15,7 +16,7 @@ object ResourceAnalyser {
     //val animators = mutableListOf<Any>()
     val bools = mutableListOf<BoolRes>()
     val colors = mutableListOf<ColorRes>()
-    //val dimens = mutableListOf<Any>()
+    val dimens = mutableListOf<DimenRes>()
     val drawables = mutableListOf<DrawableRes>()
     //val ids = mutableListOf<Any>()
     //val interpolators = mutableListOf<Any>()
@@ -30,25 +31,26 @@ object ResourceAnalyser {
     fun init(appContext: Context) {
         Log.e("MyResources", "--------------------------------- START")
         val packageName = appContext.packageName
+        //TODO: Clean suffix auto-detect (or passed in BuildConfig?)
         val packageNameNoSuffix = packageName.replace(".debug", "")
-        Log.e("OO", "packageName: $packageName ($packageNameNoSuffix)")
 
         getDexFiles(appContext).flatMap { it.entries().asSequence() }
             .filter { it.startsWith(packageNameNoSuffix) && it.contains(".R$") }
             .map {
-                Log.e("OO", "R.java: $it")
-                appContext.classLoader.loadClass(it) }
+                appContext.classLoader.loadClass(it)
+            }
             .forEach { internalClass ->
-                Log.e("OO", "R.java$: $internalClass")
                 when (internalClass.simpleName) {
-                    "bool" -> internalClass.fields.forEach {
+                    ResourceDefType.Bool.typeName -> internalClass.fields.forEach {
                         bools += BoolRes(appContext, packageName, it.name)
                     }
-                    "color" -> internalClass.fields.forEach {
+                    ResourceDefType.Color.typeName -> internalClass.fields.forEach {
                         colors += ColorRes(appContext, packageName, it.name)
                     }
-                    "drawable" -> internalClass.fields.forEach {
-                        Log.e("OO", "R.java\$drawable: " + DrawableRes(appContext, packageName, it.name))
+                    ResourceDefType.Dimen.typeName -> internalClass.fields.forEach {
+                        dimens += DimenRes(appContext, packageName, it.name)
+                    }
+                    ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
                         drawables += DrawableRes(appContext, packageNameNoSuffix, it.name)
                     }
                 }

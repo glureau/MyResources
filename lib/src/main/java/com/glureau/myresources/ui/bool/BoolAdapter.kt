@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.toHex
+import com.glureau.myresources.core.types.BaseResDiffCallback
 import com.glureau.myresources.core.types.bool.BoolRes
 
-class BoolAdapter : ListAdapter<BoolRes, BoolAdapter.ViewHolder>(BoolRes.DiffCallback) {
+class BoolAdapter : ListAdapter<BoolRes, BoolAdapter.ViewHolder>(BaseResDiffCallback()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemSwitch: Switch by lazy { itemView.findViewById<Switch>(R.id.item_bool_switch) }

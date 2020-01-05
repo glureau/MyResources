@@ -3,25 +3,11 @@ package com.glureau.myresources.core.types.color
 import android.content.Context
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
-import androidx.recyclerview.widget.DiffUtil
 import com.glureau.myresources.core.ResourceDefType
-import com.glureau.myresources.core.getIdentifier
+import com.glureau.myresources.core.types.BaseRes
 
-data class ColorRes(
-    val appContext: Context,
-    val packageName: String,
-    val resName: String
-) {
-    object DiffCallback : DiffUtil.ItemCallback<ColorRes>() {
-        override fun areItemsTheSame(oldItem: ColorRes, newItem: ColorRes) =
-            oldItem.resName == newItem.resName
-
-        override fun areContentsTheSame(oldItem: ColorRes, newItem: ColorRes) =
-            oldItem == newItem
-
-    }
-
-    val resId: Int = appContext.getIdentifier(resName, ResourceDefType.Color)
+data class ColorRes(val _appContext: Context, val _packageName: String, val _resName: String) :
+    BaseRes(_appContext, _packageName, _resName, ResourceDefType.Color) {
 
     val defaultColor by lazy { color(appContext) ?: 0 }
     val luminance by lazy { ColorUtils.calculateLuminance(defaultColor) }
