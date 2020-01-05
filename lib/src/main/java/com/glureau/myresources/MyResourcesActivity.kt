@@ -2,24 +2,35 @@ package com.glureau.myresources
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.ui.BaseFragment
+import com.glureau.myresources.ui.bool.BoolFragment
+import com.glureau.myresources.ui.color.ColorFragment
+import com.glureau.myresources.ui.drawable.DrawableFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class MyResourcesActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private data class NavItem(
+        val tag: String,
+        val fragmentFactory: () -> BaseFragment
+    )
+
+    // MenuItem id to NavItem
+    private val navMap = mapOf(
+        R.id.nav_bool to NavItem(BoolFragment.FRAGMENT_TAG, ::BoolFragment),
+        R.id.nav_color to NavItem(ColorFragment.FRAGMENT_TAG, ::ColorFragment),
+        R.id.nav_drawable to NavItem(DrawableFragment.FRAGMENT_TAG, ::DrawableFragment)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,31 +45,44 @@ class MyResourcesActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_bool, R.id.nav_color, R.id.nav_drawable,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send
-            ), drawerLayout
+        navView.setNavigationItemSelectedListener { item ->
+            Log.e("OO", "Open $item")
+            updateContent(item)
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
 
         ResourceAnalyser.init(applicationContext)
-
-        drawerLayout.openDrawer(Gravity.LEFT)
+        drawerLayout.openDrawer(GravityCompat.START)
     }
+
+    private fun updateContent(item: MenuItem) {
+        val nav = navMap[item.itemId] ?: navMap.values.first()
+        val fragment =
+            (supportFragmentManager.findFragmentByTag(nav.tag) as? BaseFragment)
+                ?: nav.fragmentFactory()
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.myr_fragment_container, fragment, nav.tag)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

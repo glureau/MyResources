@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.ui.BaseFragment
 
-class DrawableFragment : Fragment() {
+class DrawableFragment : BaseFragment() {
+
+    companion object : BaseFragmentCompanion() {
+        override val FRAGMENT_TAG = "DrawableFragment"
+    }
 
     private val drawableAdapter by lazy { DrawableAdapter() }
 

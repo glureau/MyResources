@@ -32,7 +32,7 @@ object ResourceAnalyser {
         Log.e("MyResources", "--------------------------------- START")
         val packageName = appContext.packageName
         //TODO: Clean suffix auto-detect (or passed in BuildConfig?)
-        val packageNameNoSuffix = packageName.replace(".debug", "")
+        val packageNameNoSuffix = packageName.substringBeforeLast(".")
 
         getDexFiles(appContext).flatMap { it.entries().asSequence() }
             .filter { it.startsWith(packageNameNoSuffix) && it.contains(".R$") }
