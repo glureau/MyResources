@@ -30,16 +30,28 @@ object ResourceAnalyser {
 
     fun init(appContext: Context) {
         Log.e("MyResources", "--------------------------------- START")
-        val packageName = appContext.packageName
-        //TODO: Clean suffix auto-detect (or passed in BuildConfig?)
-        val packageNameNoSuffix = packageName.substringBeforeLast(".")
 
-        getDexFiles(appContext).flatMap { it.entries().asSequence() }
-            .filter { it.startsWith(packageNameNoSuffix) && it.contains(".R$") }
-            .map {
-                appContext.classLoader.loadClass(it)
+        getDexFiles(appContext)
+            .flatMap { it.entries().asSequence() }
+            .filter {
+                it.contains(".R$") &&
+                        !it.startsWith("androidx.") &&
+                        !it.startsWith("com.google.maps.android.R") &&
+                        !it.startsWith("com.bumptech.glide.R") &&
+                        !it.startsWith("com.google.android.material.R") &&
+                        !it.startsWith("com.google.firebase.R") &&
+                        !it.startsWith("com.google.firebase.icing.R") &&
+                        !it.startsWith("com.google.firebase.crash.R") &&
+                        !it.startsWith("dagger.android.support.R") &&
+                        !it.startsWith("me.mvdw.recyclerviewmergeadapter.R") &&
+                        !it.startsWith("com.glureau.myresources.R")
             }
+            .map { appContext.classLoader.loadClass(it) }
             .forEach { internalClass ->
+                val packageName =
+                    internalClass.canonicalName?.substringBefore(".R$") ?: return@forEach
+                Log.e("MyResources", "Available R class: ${internalClass.canonicalName}")
+
                 when (internalClass.simpleName) {
                     ResourceDefType.Bool.typeName -> internalClass.fields.forEach {
                         bools += BoolRes(appContext, packageName, it.name)
@@ -51,7 +63,7 @@ object ResourceAnalyser {
                         dimens += DimenRes(appContext, packageName, it.name)
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
-                        drawables += DrawableRes(appContext, packageNameNoSuffix, it.name)
+                        drawables += DrawableRes(appContext, packageName, it.name)
                     }
                 }
             }

@@ -3,7 +3,6 @@ package com.glureau.myresources
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,15 +20,16 @@ import com.google.android.material.snackbar.Snackbar
 class MyResourcesActivity : AppCompatActivity() {
 
     private data class NavItem(
+        val title: String,
         val tag: String,
         val fragmentFactory: () -> BaseFragment
     )
 
     // MenuItem id to NavItem
     private val navMap = mapOf(
-        R.id.nav_bool to NavItem(BoolFragment.FRAGMENT_TAG, ::BoolFragment),
-        R.id.nav_color to NavItem(ColorFragment.FRAGMENT_TAG, ::ColorFragment),
-        R.id.nav_drawable to NavItem(DrawableFragment.FRAGMENT_TAG, ::DrawableFragment)
+        R.id.nav_bool to NavItem("Booleans", BoolFragment.FRAGMENT_TAG, ::BoolFragment),
+        R.id.nav_color to NavItem("Colors", ColorFragment.FRAGMENT_TAG, ::ColorFragment),
+        R.id.nav_drawable to NavItem("Drawables", DrawableFragment.FRAGMENT_TAG, ::DrawableFragment)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class MyResourcesActivity : AppCompatActivity() {
         val navView: NavigationView = findViewById(R.id.nav_view)
         navView.setNavigationItemSelectedListener { item ->
             Log.e("OO", "Open $item")
-            updateContent(item)
+            updateContent(item.itemId)
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
@@ -64,11 +64,12 @@ class MyResourcesActivity : AppCompatActivity() {
 
 
         ResourceAnalyser.init(applicationContext)
+        updateContent(R.id.nav_drawable)
         drawerLayout.openDrawer(GravityCompat.START)
     }
 
-    private fun updateContent(item: MenuItem) {
-        val nav = navMap[item.itemId] ?: navMap.values.first()
+    private fun updateContent(itemId: Int) {
+        val nav = navMap[itemId] ?: navMap.values.first()
         val fragment =
             (supportFragmentManager.findFragmentByTag(nav.tag) as? BaseFragment)
                 ?: nav.fragmentFactory()
@@ -77,6 +78,7 @@ class MyResourcesActivity : AppCompatActivity() {
             .replace(R.id.myr_fragment_container, fragment, nav.tag)
             .addToBackStack(null)
             .commit()
+        title = nav.title
     }
 
 

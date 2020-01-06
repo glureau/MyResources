@@ -8,5 +8,5 @@ fun Int.toHumanByteCount() =
     when {
         this > MegaBytes -> String.format("%.2f MB", (this / MegaBytes))
         this > KiloBytes -> String.format("%.2f KB", (this / KiloBytes))
-        else -> String.format("%f B", this)
+        else -> String.format("%d B", this)
     }
