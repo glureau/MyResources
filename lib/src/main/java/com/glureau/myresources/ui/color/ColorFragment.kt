@@ -30,6 +30,6 @@ class ColorFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        colorAdapter.submitList(ResourceAnalyser.colors)
+        colorAdapter.submitList(ResourceAnalyser.aggregator.getColors())
     }
 }

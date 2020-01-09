@@ -30,6 +30,6 @@ class DrawableFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        drawableAdapter.submitList(ResourceAnalyser.drawables)
+        drawableAdapter.submitList(ResourceAnalyser.aggregator.getDrawables())
     }
 }

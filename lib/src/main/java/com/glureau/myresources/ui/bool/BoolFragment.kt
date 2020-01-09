@@ -30,6 +30,6 @@ class BoolFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        boolAdapter.submitList(ResourceAnalyser.bools)
+        boolAdapter.submitList(ResourceAnalyser.aggregator.getBools())
     }
 }

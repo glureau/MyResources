@@ -12,40 +12,14 @@ import java.lang.reflect.Field
 
 object ResourceAnalyser {
 
-    //val anims = mutableListOf<Any>()
-    //val animators = mutableListOf<Any>()
-    val bools = mutableListOf<BoolRes>()
-    val colors = mutableListOf<ColorRes>()
-    val dimens = mutableListOf<DimenRes>()
-    val drawables = mutableListOf<DrawableRes>()
-    //val ids = mutableListOf<Any>()
-    //val interpolators = mutableListOf<Any>()
-    //val layouts = mutableListOf<Any>()
-    //val menus = mutableListOf<Any>()
-    //val mipmaps = mutableListOf<Any>()
-    //val navigations = mutableListOf<Any>()
-    //val strings = mutableListOf<Any>()
-    //val styles = mutableListOf<Any>()
-    //val styleables = mutableListOf<Any>()
+    val aggregator = ResAggregator()
 
     fun init(appContext: Context) {
         Log.e("MyResources", "--------------------------------- START")
 
         getDexFiles(appContext)
             .flatMap { it.entries().asSequence() }
-            .filter {
-                it.contains(".R$") &&
-                        !it.startsWith("androidx.") &&
-                        !it.startsWith("com.google.maps.android.R") &&
-                        !it.startsWith("com.bumptech.glide.R") &&
-                        !it.startsWith("com.google.android.material.R") &&
-                        !it.startsWith("com.google.firebase.R") &&
-                        !it.startsWith("com.google.firebase.icing.R") &&
-                        !it.startsWith("com.google.firebase.crash.R") &&
-                        !it.startsWith("dagger.android.support.R") &&
-                        !it.startsWith("me.mvdw.recyclerviewmergeadapter.R") &&
-                        !it.startsWith("com.glureau.myresources.R")
-            }
+            .filter { it.contains(".R$") }
             .map { appContext.classLoader.loadClass(it) }
             .forEach { internalClass ->
                 val packageName =
@@ -54,20 +28,19 @@ object ResourceAnalyser {
 
                 when (internalClass.simpleName) {
                     ResourceDefType.Bool.typeName -> internalClass.fields.forEach {
-                        bools += BoolRes(appContext, packageName, it.name)
+                        aggregator.addBool(BoolRes(appContext, packageName, it.name))
                     }
                     ResourceDefType.Color.typeName -> internalClass.fields.forEach {
-                        colors += ColorRes(appContext, packageName, it.name)
+                        aggregator.addColor(ColorRes(appContext, packageName, it.name))
                     }
                     ResourceDefType.Dimen.typeName -> internalClass.fields.forEach {
-                        dimens += DimenRes(appContext, packageName, it.name)
+                        aggregator.addDimen(DimenRes(appContext, packageName, it.name))
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
-                        drawables += DrawableRes(appContext, packageName, it.name)
+                        aggregator.addDrawable(DrawableRes(appContext, packageName, it.name))
                     }
                 }
             }
-        colors.sortByDescending { it.hue }
         Log.e("MyResources", "--------------------------------- READY")
     }
 
