@@ -7,6 +7,7 @@ import com.glureau.myresources.core.types.bool.BoolRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.color.ColorSorter
 import com.glureau.myresources.core.types.dimen.DimenRes
+import com.glureau.myresources.core.types.dimen.DimenSorter
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
 class ResAggregator {
@@ -52,6 +53,7 @@ class ResAggregator {
             field = value
             invalidateSignal?.invoke()
         }
+    var dimenSorter: ResSorter<DimenRes> = DimenSorter
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
 
     fun addBool(res: BoolRes) = bools.add(res)
@@ -61,7 +63,7 @@ class ResAggregator {
     fun getColors() = colors.filter(packageFilter::filter).sortedBy(colorSorter::sort)
 
     fun addDimen(res: DimenRes) = dimens.add(res)
-    fun getDimens() = dimens.filter(packageFilter::filter)
+    fun getDimens() = dimens.filter(packageFilter::filter).sortedBy(dimenSorter::sort)
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
     fun getDrawables() = drawables.filter(packageFilter::filter)

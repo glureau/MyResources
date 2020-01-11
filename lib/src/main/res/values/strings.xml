@@ -9,8 +9,6 @@
 
     <string name="menu_bool">Booleans</string>
     <string name="menu_color">Colors</string>
+    <string name="menu_dimen">Dimens</string>
     <string name="menu_drawable">Drawables</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
 </resources>

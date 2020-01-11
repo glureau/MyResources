@@ -15,6 +15,7 @@ import com.glureau.myresources.core.filter.PackageFilter
 import com.glureau.myresources.ui.BaseFragment
 import com.glureau.myresources.ui.bool.BoolFragment
 import com.glureau.myresources.ui.color.ColorFragment
+import com.glureau.myresources.ui.dimen.DimenFragment
 import com.glureau.myresources.ui.drawable.DrawableFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -42,6 +43,12 @@ class MyResourcesActivity : AppCompatActivity() {
             ColorFragment.FRAGMENT_TAG,
             ::ColorFragment,
             Package::colorCount
+        ),
+        R.id.nav_dimen to NavItem(
+            "Dimens",
+            DimenFragment.FRAGMENT_TAG,
+            ::DimenFragment,
+            Package::dimenCount
         ),
         R.id.nav_drawable to NavItem(
             "Drawables",
@@ -102,7 +109,6 @@ class MyResourcesActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        Log.e("OO", "onPrepareOptionsMenu")
         var index = Menu.FIRST
 
         menu.clear()
@@ -130,13 +136,6 @@ class MyResourcesActivity : AppCompatActivity() {
             else -> PackageFilter.SpecificPackageFilter(ResourceAnalyser.aggregator.packages[item.itemId - Menu.FIRST - 1].name)
         }
         item.itemId
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //menuInflater.inflate(R.menu.main, menu)
         return true
     }
 }
