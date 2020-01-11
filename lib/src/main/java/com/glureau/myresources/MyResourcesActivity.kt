@@ -2,11 +2,13 @@ package com.glureau.myresources
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ListPopupWindow
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.glureau.myresources.core.Package
@@ -20,6 +22,7 @@ import com.glureau.myresources.ui.drawable.DrawableFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+
 
 class MyResourcesActivity : AppCompatActivity() {
 
@@ -63,8 +66,9 @@ class MyResourcesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.myr_activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+
+        Log.e("OO", "ResourceAnalyser.INIT")
+        ResourceAnalyser.init(applicationContext)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -74,27 +78,79 @@ class MyResourcesActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         navView.setNavigationItemSelectedListener { item ->
-            Log.e("OO", "Open $item")
             updateContent(item.itemId)
             drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        findViewById<View>(R.id.myr_appbar_menu)?.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
 
+        preparePackageFiltering()
+        prepareSearchView()
 
-        Log.e("OO", "ResourceAnalyser.INIT")
-        ResourceAnalyser.init(applicationContext)
         updateContent(R.id.nav_drawable)
         drawerLayout.openDrawer(GravityCompat.START)
+    }
+
+    private fun prepareSearchView() {
+        val searchView = findViewById<SearchView>(R.id.myr_appbar_search)
+        searchView?.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    ResourceAnalyser.aggregator.searchQuery(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    ResourceAnalyser.aggregator.searchQuery(newText)
+                    // Auto-close search view when no text
+                    if (newText.isNullOrEmpty()) {
+                        searchView.isIconified = true
+                    }
+                    return true
+                }
+
+            })
+    }
+
+    private fun preparePackageFiltering() {
+        val options = mutableListOf<String>()
+        options += "Auto filtered"
+        val currentPage = navMap.values.firstOrNull { it.title == title }
+        ResourceAnalyser.aggregator.packages.forEach { pack ->
+            val count = when (currentPage) {
+                null -> pack.totalCount
+                else -> currentPage.resCount(pack)
+            }
+            if (count > 0) {
+                options += "${pack.name} ($count)"
+            }
+        }
+        val filterView = findViewById<View>(R.id.myr_appbar_filter)
+        val listPopupWindow = ListPopupWindow(this)
+        listPopupWindow.setAdapter(
+            ArrayAdapter<String>(
+                this@MyResourcesActivity,
+                android.R.layout.simple_list_item_1,
+                options
+            )
+        )
+        listPopupWindow.anchorView = filterView
+        listPopupWindow.width = 800
+        listPopupWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        listPopupWindow.isModal = true
+        listPopupWindow.setOnItemClickListener { _, _, position, _ ->
+            ResourceAnalyser.aggregator.packageFilter = when (position) {
+                0 -> PackageFilter.KnownPackageFilter
+                else -> PackageFilter.SpecificPackageFilter(ResourceAnalyser.aggregator.packages[position - 1].name)
+            }
+            listPopupWindow.dismiss()
+        }
+        filterView?.setOnClickListener {
+            listPopupWindow.show()
+        }
     }
 
     private fun updateContent(itemId: Int) {
@@ -107,37 +163,7 @@ class MyResourcesActivity : AppCompatActivity() {
             .replace(R.id.myr_fragment_container, fragment, nav.tag)
             .addToBackStack(null)
             .commit()
-        title = nav.title
+        findViewById<TextView>(R.id.myr_appbar_title)?.text = nav.title
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        var index = Menu.FIRST
-
-        menu.clear()
-
-        menu.add(Menu.NONE, index, index, "Auto filtered")
-        index++
-
-        val currentPage = navMap.values.firstOrNull { it.title == title }
-        ResourceAnalyser.aggregator.packages.forEach { pack ->
-            val count = when (currentPage) {
-                null -> pack.totalCount
-                else -> currentPage.resCount(pack)
-            }
-            if (count > 0) {
-                menu.add(Menu.NONE, index, index, "${pack.name} ($count)")
-                index++
-            }
-        }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        ResourceAnalyser.aggregator.packageFilter = when (item.itemId) {
-            Menu.FIRST -> PackageFilter.KnownPackageFilter
-            else -> PackageFilter.SpecificPackageFilter(ResourceAnalyser.aggregator.packages[item.itemId - Menu.FIRST - 1].name)
-        }
-        item.itemId
-        return true
-    }
 }

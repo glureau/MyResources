@@ -1,6 +1,7 @@
 package com.glureau.myresources.core
 
 import com.glureau.myresources.core.filter.PackageFilter
+import com.glureau.myresources.core.filter.SearchFilter
 import com.glureau.myresources.core.sorter.InverseSorter
 import com.glureau.myresources.core.sorter.ResSorter
 import com.glureau.myresources.core.types.bool.BoolRes
@@ -53,23 +54,39 @@ class ResAggregator {
             field = value
             invalidateSignal?.invoke()
         }
+    private val searchFilter = SearchFilter()
     var dimenSorter: ResSorter<DimenRes> = DimenSorter
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
 
     fun addBool(res: BoolRes) = bools.add(res)
-    fun getBools() = bools.filter(packageFilter::filter)
+    fun getBools() = bools
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
 
     fun addColor(res: ColorRes) = colors.add(res)
-    fun getColors() = colors.filter(packageFilter::filter).sortedBy(colorSorter::sort)
+    fun getColors() = colors
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
+        .sortedBy(colorSorter::sort)
 
     fun addDimen(res: DimenRes) = dimens.add(res)
-    fun getDimens() = dimens.filter(packageFilter::filter).sortedBy(dimenSorter::sort)
+    fun getDimens() = dimens
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
+        .sortedBy(dimenSorter::sort)
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
-    fun getDrawables() = drawables.filter(packageFilter::filter)
+    fun getDrawables() = drawables
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
 
     fun addPackageName(packageName: String) {
         packageNames.add(packageName)
+    }
+
+    fun searchQuery(query: String?) {
+        searchFilter.query = query
+        invalidateSignal?.invoke()
     }
 
 }
