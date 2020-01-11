@@ -31,32 +31,34 @@ class MyResourcesActivity : AppCompatActivity() {
     )
 
     // MenuItem id to NavItem
-    private val navMap = mapOf(
-        R.id.nav_bool to NavItem(
-            "Booleans",
-            BoolFragment.FRAGMENT_TAG,
-            ::BoolFragment,
-            Package::boolCount
-        ),
-        R.id.nav_color to NavItem(
-            "Colors",
-            ColorFragment.FRAGMENT_TAG,
-            ::ColorFragment,
-            Package::colorCount
-        ),
-        R.id.nav_dimen to NavItem(
-            "Dimens",
-            DimenFragment.FRAGMENT_TAG,
-            ::DimenFragment,
-            Package::dimenCount
-        ),
-        R.id.nav_drawable to NavItem(
-            "Drawables",
-            DrawableFragment.FRAGMENT_TAG,
-            ::DrawableFragment,
-            Package::drawableCount
+    private val navMap by lazy {
+        mapOf(
+            R.id.nav_bool to NavItem(
+                getString(R.string.menu_bool),
+                BoolFragment.FRAGMENT_TAG,
+                ::BoolFragment,
+                Package::boolCount
+            ),
+            R.id.nav_color to NavItem(
+                getString(R.string.menu_color),
+                ColorFragment.FRAGMENT_TAG,
+                ::ColorFragment,
+                Package::colorCount
+            ),
+            R.id.nav_dimen to NavItem(
+                getString(R.string.menu_dimen),
+                DimenFragment.FRAGMENT_TAG,
+                ::DimenFragment,
+                Package::dimenCount
+            ),
+            R.id.nav_drawable to NavItem(
+                getString(R.string.menu_drawable),
+                DrawableFragment.FRAGMENT_TAG,
+                ::DrawableFragment,
+                Package::drawableCount
+            )
         )
-    )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
