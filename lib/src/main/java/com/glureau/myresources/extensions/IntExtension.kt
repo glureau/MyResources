@@ -1,4 +1,4 @@
-package com.glureau.myresources.core
+package com.glureau.myresources.extensions
 
 fun Int.toHex() = toUInt().toString(16).toUpperCase()
 

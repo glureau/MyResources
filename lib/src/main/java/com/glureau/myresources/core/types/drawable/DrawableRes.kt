@@ -6,8 +6,8 @@ import android.util.Log
 import com.glureau.myresources.core.ResourceDefType
 import com.glureau.myresources.core.types.BaseRes
 
-data class DrawableRes(val _appContext: Context, val _packageName: String, val _resName: String) :
-    BaseRes(_appContext, _packageName, _resName, ResourceDefType.Drawable) {
+data class DrawableRes(val _appContext: Context, val _resourceClassName: String, val _resName: String) :
+    BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Drawable) {
 
     fun drawable(context: Context): Drawable? {
         return try {

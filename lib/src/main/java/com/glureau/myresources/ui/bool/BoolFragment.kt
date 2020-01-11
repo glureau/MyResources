@@ -31,5 +31,14 @@ class BoolFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         boolAdapter.submitList(ResourceAnalyser.aggregator.getBools())
+        ResourceAnalyser.aggregator.invalidateSignal = {
+            boolAdapter.submitList(ResourceAnalyser.aggregator.getBools())
+            view?.findViewById<RecyclerView>(R.id.bool_list)?.smoothScrollToPosition(0)
+        }
+    }
+
+    override fun onPause() {
+        ResourceAnalyser.aggregator.invalidateSignal = null
+        super.onPause()
     }
 }

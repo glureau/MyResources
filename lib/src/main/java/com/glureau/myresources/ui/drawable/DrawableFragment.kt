@@ -31,5 +31,14 @@ class DrawableFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         drawableAdapter.submitList(ResourceAnalyser.aggregator.getDrawables())
+        ResourceAnalyser.aggregator.invalidateSignal = {
+            drawableAdapter.submitList(ResourceAnalyser.aggregator.getDrawables())
+            view?.findViewById<RecyclerView>(R.id.drawable_list)?.smoothScrollToPosition(0)
+        }
+    }
+
+    override fun onPause() {
+        ResourceAnalyser.aggregator.invalidateSignal = null
+        super.onPause()
     }
 }

@@ -8,4 +8,6 @@ interface ResSorter<T : BaseRes> {
 
 class InverseSorter<T : BaseRes>(private val sorter: ResSorter<T>) : ResSorter<T> {
     override fun sort(item: T) = -1 * sorter.sort(item)
+
+    override fun toString() = "$sorter Desc"
 }

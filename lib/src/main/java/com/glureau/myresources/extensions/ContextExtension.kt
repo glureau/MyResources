@@ -1,6 +1,7 @@
-package com.glureau.myresources.core
+package com.glureau.myresources.extensions
 
 import android.content.Context
+import com.glureau.myresources.core.ResourceDefType
 
 fun Context.getIdentifier(resName: String, type: ResourceDefType) =
     getIdentifier(resName, type, packageName)

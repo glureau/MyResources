@@ -31,5 +31,14 @@ class ColorFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         colorAdapter.submitList(ResourceAnalyser.aggregator.getColors())
+        ResourceAnalyser.aggregator.invalidateSignal = {
+            colorAdapter.submitList(ResourceAnalyser.aggregator.getColors())
+            view?.findViewById<RecyclerView>(R.id.color_list)?.smoothScrollToPosition(0)
+        }
+    }
+
+    override fun onPause() {
+        ResourceAnalyser.aggregator.invalidateSignal = null
+        super.onPause()
     }
 }

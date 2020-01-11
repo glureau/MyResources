@@ -6,8 +6,8 @@ import androidx.core.graphics.ColorUtils
 import com.glureau.myresources.core.ResourceDefType
 import com.glureau.myresources.core.types.BaseRes
 
-data class ColorRes(val _appContext: Context, val _packageName: String, val _resName: String) :
-    BaseRes(_appContext, _packageName, _resName, ResourceDefType.Color) {
+data class ColorRes(val _appContext: Context, val _resourceClassName: String, val _resName: String) :
+    BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Color) {
 
     val defaultColor by lazy { color(appContext) ?: 0 }
     val luminance by lazy { ColorUtils.calculateLuminance(defaultColor) }

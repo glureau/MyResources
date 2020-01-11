@@ -22,22 +22,24 @@ object ResourceAnalyser {
             .filter { it.contains(".R$") }
             .map { appContext.classLoader.loadClass(it) }
             .forEach { internalClass ->
-                val packageName =
+                val resourceClassName =
                     internalClass.canonicalName?.substringBefore(".R$") ?: return@forEach
                 Log.e("MyResources", "Available R class: ${internalClass.canonicalName}")
 
+                aggregator.addPackageName(resourceClassName.substringBefore(".R."))
+
                 when (internalClass.simpleName) {
                     ResourceDefType.Bool.typeName -> internalClass.fields.forEach {
-                        aggregator.addBool(BoolRes(appContext, packageName, it.name))
+                        aggregator.addBool(BoolRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Color.typeName -> internalClass.fields.forEach {
-                        aggregator.addColor(ColorRes(appContext, packageName, it.name))
+                        aggregator.addColor(ColorRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Dimen.typeName -> internalClass.fields.forEach {
-                        aggregator.addDimen(DimenRes(appContext, packageName, it.name))
+                        aggregator.addDimen(DimenRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
-                        aggregator.addDrawable(DrawableRes(appContext, packageName, it.name))
+                        aggregator.addDrawable(DrawableRes(appContext, resourceClassName, it.name))
                     }
                 }
             }

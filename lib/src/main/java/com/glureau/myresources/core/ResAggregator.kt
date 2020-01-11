@@ -1,16 +1,35 @@
 package com.glureau.myresources.core
 
 import com.glureau.myresources.core.filter.PackageFilter
-import com.glureau.myresources.core.sorter.ColorSorter
 import com.glureau.myresources.core.sorter.InverseSorter
 import com.glureau.myresources.core.sorter.ResSorter
 import com.glureau.myresources.core.types.bool.BoolRes
 import com.glureau.myresources.core.types.color.ColorRes
+import com.glureau.myresources.core.types.color.ColorSorter
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
 class ResAggregator {
 
+    var invalidateSignal: (() -> Unit)? = null
+
+    private val packageNames = mutableSetOf<String>()
+    val packages by lazy {
+        packageNames
+            .map { name ->
+                val boolCount = bools.count { it.packageName == name }
+                val colorCount = colors.count { it.packageName == name }
+                val dimenCount = dimens.count { it.packageName == name }
+                val drawableCount = drawables.count { it.packageName == name }
+                Package(
+                    name,
+                    boolCount, colorCount, dimenCount, drawableCount,
+                    totalCount = boolCount + colorCount + dimenCount + drawableCount
+                )
+            }
+            .sortedBy { -it.totalCount }
+            .filter { it.totalCount > 0 }
+    }
 
     //private val anims = mutableListOf<Any>()
     //private val animators = mutableListOf<Any>()
@@ -28,7 +47,11 @@ class ResAggregator {
     //private val styles = mutableListOf<Any>()
     //private val styleables = mutableListOf<Any>()
 
-    var packageFilter: PackageFilter = PackageFilter.KnownPackageFilter()
+    var packageFilter: PackageFilter = PackageFilter.KnownPackageFilter
+        set(value) {
+            field = value
+            invalidateSignal?.invoke()
+        }
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
 
     fun addBool(res: BoolRes) = bools.add(res)
@@ -42,5 +65,9 @@ class ResAggregator {
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
     fun getDrawables() = drawables.filter(packageFilter::filter)
+
+    fun addPackageName(packageName: String) {
+        packageNames.add(packageName)
+    }
 
 }

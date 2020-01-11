@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.toHex
-import com.glureau.myresources.core.toHumanByteCount
+import com.glureau.myresources.extensions.toHex
+import com.glureau.myresources.extensions.toHumanByteCount
 import com.glureau.myresources.core.types.BaseResDiffCallback
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
