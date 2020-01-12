@@ -9,7 +9,7 @@
         android:id="@+id/item_color_view"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:background="@drawable/myres_transparent_background_2"
+        android:background="@drawable/myr_transparent_background_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

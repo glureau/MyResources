@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/myr_side_nav_bar"
     tools:context=".MyResourcesActivity">
 
     <ImageView
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:src="@drawable/ic_menu_white_24dp"
+        android:src="@drawable/myr_ic_menu_white_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,13 +42,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_filter_list_white_24dp" />
+        app:srcCompat="@drawable/myr_ic_filter_list_white_24dp" />
 
     <SearchView
         android:id="@+id/myr_appbar_search"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
         android:gravity="end"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"

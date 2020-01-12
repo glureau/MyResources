@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_bool"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/myr_ic_check_box_white_24dp"
             android:title="@string/menu_bool" />
         <item
             android:id="@+id/nav_color"
-            android:icon="@color/colorPrimaryDark"
+            android:icon="@drawable/myr_ic_color_lens_white_24dp"
             android:title="@string/menu_color" />
         <item
             android:id="@+id/nav_dimen"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/myr_ic_measure_white_24dp"
             android:title="@string/menu_dimen" />
         <item
             android:id="@+id/nav_drawable"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/myr_ic_image_white_24dp"
             android:title="@string/menu_drawable" />
     </group>
 
