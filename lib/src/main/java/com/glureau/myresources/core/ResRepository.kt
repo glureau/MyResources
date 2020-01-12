@@ -14,6 +14,7 @@ import com.glureau.myresources.core.types.color.ColorSorter
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.dimen.DimenSorter
 import com.glureau.myresources.core.types.drawable.DrawableRes
+import com.glureau.myresources.core.types.layout.LayoutRes
 
 class ResRepository {
 
@@ -27,10 +28,11 @@ class ResRepository {
                 val colorCount = colors.count { it.packageName == name }
                 val dimenCount = dimens.count { it.packageName == name }
                 val drawableCount = drawables.count { it.packageName == name }
+                val layoutCount = layouts.count { it.packageName == name }
                 Package(
                     name,
-                    boolCount, colorCount, dimenCount, drawableCount,
-                    totalCount = boolCount + colorCount + dimenCount + drawableCount
+                    boolCount, colorCount, dimenCount, drawableCount, layoutCount,
+                    totalCount = boolCount + colorCount + dimenCount + drawableCount + layoutCount
                 )
             }
             .sortedBy { -it.totalCount }
@@ -45,7 +47,7 @@ class ResRepository {
     private val drawables = mutableListOf<DrawableRes>()
     //private val ids = mutableListOf<Any>()
     //private val interpolators = mutableListOf<Any>()
-    //private val layouts = mutableListOf<Any>()
+    private val layouts = mutableListOf<LayoutRes>()
     //private val menus = mutableListOf<Any>()
     //private val mipmaps = mutableListOf<Any>()
     //private val navigations = mutableListOf<Any>()
@@ -83,6 +85,11 @@ class ResRepository {
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
     fun getDrawables() = drawables
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
+
+    fun addLayout(res: LayoutRes) = layouts.add(res)
+    fun getLayouts() = layouts
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
 

@@ -6,6 +6,7 @@ import com.glureau.myresources.core.types.bool.BoolRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
+import com.glureau.myresources.core.types.layout.LayoutRes
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
 import java.lang.reflect.Field
@@ -40,6 +41,9 @@ object ResParser {
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
                         repository.addDrawable(DrawableRes(appContext, resourceClassName, it.name))
+                    }
+                    ResourceDefType.Layout.typeName -> internalClass.fields.forEach {
+                        repository.addLayout(LayoutRes(appContext, resourceClassName, it.name))
                     }
                 }
             }

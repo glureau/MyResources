@@ -6,5 +6,6 @@ data class Package(
     val colorCount: Int,
     val dimenCount: Int,
     val drawableCount: Int,
+    val layoutCount: Int,
     val totalCount: Int
 )

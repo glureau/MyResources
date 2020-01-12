@@ -4,5 +4,6 @@ enum class ResourceDefType(val typeName: String) {
     Bool("bool"),
     Color("color"),
     Dimen("dimen"),
-    Drawable("drawable")
+    Drawable("drawable"),
+    Layout("layout")
 }

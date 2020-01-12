@@ -8,4 +8,5 @@
     <string name="menu_color">Colors</string>
     <string name="menu_dimen">Dimens</string>
     <string name="menu_drawable">Drawables</string>
+    <string name="menu_layout">Layouts</string>
 </resources>

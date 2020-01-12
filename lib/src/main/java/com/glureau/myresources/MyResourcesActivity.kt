@@ -19,6 +19,7 @@ import com.glureau.myresources.ui.bool.BoolFragment
 import com.glureau.myresources.ui.color.ColorFragment
 import com.glureau.myresources.ui.dimen.DimenFragment
 import com.glureau.myresources.ui.drawable.DrawableFragment
+import com.glureau.myresources.ui.layout.LayoutFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -59,6 +60,12 @@ class MyResourcesActivity : AppCompatActivity() {
                 DrawableFragment.FRAGMENT_TAG,
                 ::DrawableFragment,
                 Package::drawableCount
+            ),
+            R.id.nav_layout to NavItem(
+                getString(R.string.menu_layout),
+                LayoutFragment.FRAGMENT_TAG,
+                ::LayoutFragment,
+                Package::layoutCount
             )
         )
     }
