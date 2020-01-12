@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.glureau.myresources.core.Package
-import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.core.filter.PackageFilter
 import com.glureau.myresources.ui.BaseFragment
 import com.glureau.myresources.ui.bool.BoolFragment
@@ -68,7 +68,7 @@ class MyResourcesActivity : AppCompatActivity() {
         setContentView(R.layout.myr_activity_main)
 
         Log.e("OO", "ResourceAnalyser.INIT")
-        ResourceAnalyser.init(applicationContext)
+        ResParser.init(applicationContext)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -99,12 +99,12 @@ class MyResourcesActivity : AppCompatActivity() {
         searchView?.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    ResourceAnalyser.aggregator.searchQuery(query)
+                    ResParser.repository.searchQuery(query)
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    ResourceAnalyser.aggregator.searchQuery(newText)
+                    ResParser.repository.searchQuery(newText)
                     // Auto-close search view when no text
                     if (newText.isNullOrEmpty()) {
                         searchView.isIconified = true
@@ -119,7 +119,7 @@ class MyResourcesActivity : AppCompatActivity() {
         val options = mutableListOf<String>()
         options += "Auto filtered"
         val currentPage = navMap.values.firstOrNull { it.title == title }
-        ResourceAnalyser.aggregator.packages.forEach { pack ->
+        ResParser.repository.packages.forEach { pack ->
             val count = when (currentPage) {
                 null -> pack.totalCount
                 else -> currentPage.resCount(pack)
@@ -142,9 +142,9 @@ class MyResourcesActivity : AppCompatActivity() {
         listPopupWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
         listPopupWindow.isModal = true
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
-            ResourceAnalyser.aggregator.packageFilter = when (position) {
+            ResParser.repository.packageFilter = when (position) {
                 0 -> PackageFilter.KnownPackageFilter
-                else -> PackageFilter.SpecificPackageFilter(ResourceAnalyser.aggregator.packages[position - 1].name)
+                else -> PackageFilter.SpecificPackageFilter(ResParser.repository.packages[position - 1].name)
             }
             listPopupWindow.dismiss()
         }

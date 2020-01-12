@@ -10,9 +10,9 @@ import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
 import java.lang.reflect.Field
 
-object ResourceAnalyser {
+object ResParser {
 
-    val aggregator = ResAggregator()
+    val repository = ResRepository()
 
     fun init(appContext: Context) {
         Log.e("MyResources", "--------------------------------- START")
@@ -26,20 +26,20 @@ object ResourceAnalyser {
                     internalClass.canonicalName?.substringBefore(".R$") ?: return@forEach
                 Log.e("MyResources", "Available R class: ${internalClass.canonicalName}")
 
-                aggregator.addPackageName(resourceClassName.substringBefore(".R."))
+                repository.addPackageName(resourceClassName.substringBefore(".R."))
 
                 when (internalClass.simpleName) {
                     ResourceDefType.Bool.typeName -> internalClass.fields.forEach {
-                        aggregator.addBool(BoolRes(appContext, resourceClassName, it.name))
+                        repository.addBool(BoolRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Color.typeName -> internalClass.fields.forEach {
-                        aggregator.addColor(ColorRes(appContext, resourceClassName, it.name))
+                        repository.addColor(ColorRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Dimen.typeName -> internalClass.fields.forEach {
-                        aggregator.addDimen(DimenRes(appContext, resourceClassName, it.name))
+                        repository.addDimen(DimenRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
-                        aggregator.addDrawable(DrawableRes(appContext, resourceClassName, it.name))
+                        repository.addDrawable(DrawableRes(appContext, resourceClassName, it.name))
                     }
                 }
             }

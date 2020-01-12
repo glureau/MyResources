@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.ui.BaseFragment
 
 class DrawableFragment : BaseFragment() {
@@ -30,15 +30,15 @@ class DrawableFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        drawableAdapter.submitList(ResourceAnalyser.aggregator.getDrawables())
-        ResourceAnalyser.aggregator.invalidateSignal = {
-            drawableAdapter.submitList(ResourceAnalyser.aggregator.getDrawables())
+        drawableAdapter.submitList(ResParser.repository.getDrawables())
+        ResParser.repository.invalidateSignal = {
+            drawableAdapter.submitList(ResParser.repository.getDrawables())
             view?.findViewById<RecyclerView>(R.id.drawable_list)?.smoothScrollToPosition(0)
         }
     }
 
     override fun onPause() {
-        ResourceAnalyser.aggregator.invalidateSignal = null
+        ResParser.repository.invalidateSignal = null
         super.onPause()
     }
 }

@@ -1,17 +1,21 @@
 package com.glureau.myresources.core
 
+import android.content.Context
+import com.glureau.myresources.core.aggregator.ResAggregator
 import com.glureau.myresources.core.filter.PackageFilter
 import com.glureau.myresources.core.filter.SearchFilter
 import com.glureau.myresources.core.sorter.InverseSorter
 import com.glureau.myresources.core.sorter.ResSorter
 import com.glureau.myresources.core.types.bool.BoolRes
+import com.glureau.myresources.core.types.color.AggregatedColorRes
+import com.glureau.myresources.core.types.color.ColorAggregator
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.color.ColorSorter
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.dimen.DimenSorter
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
-class ResAggregator {
+class ResRepository {
 
     var invalidateSignal: (() -> Unit)? = null
 
@@ -57,6 +61,7 @@ class ResAggregator {
     private val searchFilter = SearchFilter()
     var dimenSorter: ResSorter<DimenRes> = DimenSorter
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
+    val colorAggregator: ResAggregator<ColorRes, AggregatedColorRes> = ColorAggregator()
 
     fun addBool(res: BoolRes) = bools.add(res)
     fun getBools() = bools
@@ -64,10 +69,11 @@ class ResAggregator {
         .filter(packageFilter::filter)
 
     fun addColor(res: ColorRes) = colors.add(res)
-    fun getColors() = colors
+    fun getColors(context: Context) = colors
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
         .sortedBy(colorSorter::sort)
+        .let { colorAggregator.aggregate(context, it) }
 
     fun addDimen(res: DimenRes) = dimens.add(res)
     fun getDimens() = dimens

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.ui.BaseFragment
 
 class DimenFragment : BaseFragment() {
@@ -30,15 +30,15 @@ class DimenFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        dimenAdapter.submitList(ResourceAnalyser.aggregator.getDimens())
-        ResourceAnalyser.aggregator.invalidateSignal = {
-            dimenAdapter.submitList(ResourceAnalyser.aggregator.getDimens())
+        dimenAdapter.submitList(ResParser.repository.getDimens())
+        ResParser.repository.invalidateSignal = {
+            dimenAdapter.submitList(ResParser.repository.getDimens())
             view?.findViewById<RecyclerView>(R.id.bool_list)?.smoothScrollToPosition(0)
         }
     }
 
     override fun onPause() {
-        ResourceAnalyser.aggregator.invalidateSignal = null
+        ResParser.repository.invalidateSignal = null
         super.onPause()
     }
 }

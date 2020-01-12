@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.ui.BaseFragment
 
 class BoolFragment : BaseFragment() {
@@ -30,15 +30,15 @@ class BoolFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        boolAdapter.submitList(ResourceAnalyser.aggregator.getBools())
-        ResourceAnalyser.aggregator.invalidateSignal = {
-            boolAdapter.submitList(ResourceAnalyser.aggregator.getBools())
+        boolAdapter.submitList(ResParser.repository.getBools())
+        ResParser.repository.invalidateSignal = {
+            boolAdapter.submitList(ResParser.repository.getBools())
             view?.findViewById<RecyclerView>(R.id.bool_list)?.smoothScrollToPosition(0)
         }
     }
 
     override fun onPause() {
-        ResourceAnalyser.aggregator.invalidateSignal = null
+        ResParser.repository.invalidateSignal = null
         super.onPause()
     }
 }

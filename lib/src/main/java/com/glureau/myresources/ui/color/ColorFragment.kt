@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.ResourceAnalyser
+import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.ui.BaseFragment
 
 class ColorFragment : BaseFragment() {
@@ -15,7 +15,7 @@ class ColorFragment : BaseFragment() {
         override val FRAGMENT_TAG = "ColorFragment"
     }
 
-    private val colorAdapter by lazy { ColorAdapter() }
+    private val colorAdapter by lazy { AggregatedColorAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,15 +30,15 @@ class ColorFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        colorAdapter.submitList(ResourceAnalyser.aggregator.getColors())
-        ResourceAnalyser.aggregator.invalidateSignal = {
-            colorAdapter.submitList(ResourceAnalyser.aggregator.getColors())
+        colorAdapter.submitList(ResParser.repository.getColors(requireContext()))
+        ResParser.repository.invalidateSignal = {
+            colorAdapter.submitList(ResParser.repository.getColors(requireContext()))
             view?.findViewById<RecyclerView>(R.id.color_list)?.smoothScrollToPosition(0)
         }
     }
 
     override fun onPause() {
-        ResourceAnalyser.aggregator.invalidateSignal = null
+        ResParser.repository.invalidateSignal = null
         super.onPause()
     }
 }

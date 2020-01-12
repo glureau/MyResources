@@ -1,5 +1,6 @@
 package com.glureau.myresources.ui.color
 
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
-import com.glureau.myresources.core.types.BaseResDiffCallback
+import com.glureau.myresources.core.aggregator.AggregatedResDiffCallback
+import com.glureau.myresources.core.types.color.AggregatedColorRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.extensions.toHex
 
-class ColorAdapter : ListAdapter<ColorRes, ColorAdapter.ViewHolder>(BaseResDiffCallback()) {
+class AggregatedColorAdapter : ListAdapter<AggregatedColorRes,
+        AggregatedColorAdapter.ViewHolder>(AggregatedResDiffCallback<ColorRes, AggregatedColorRes>()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemColor: ImageView by lazy { itemView.findViewById<ImageView>(R.id.item_color_view) }
@@ -28,13 +31,11 @@ class ColorAdapter : ListAdapter<ColorRes, ColorAdapter.ViewHolder>(BaseResDiffC
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val res = getItem(position)
-        val color = res.color(holder.itemView.context)
-        color?.let {
-            holder.itemColor.setImageDrawable(ColorDrawable(it))
-        }
+        val agg = getItem(position)
+        val color = agg.resources.first().color(holder.itemView.context) ?: Color.BLACK
+        holder.itemColor.setImageDrawable(ColorDrawable(color))
 
         holder.itemName.text =
-            "#${color?.toHex()} ${res.resName} (id: #${res.resId.toHex()})"
+            "#${color.toHex()} ${agg.resources.joinToString { it.resName }} (id: #${agg.resources.joinToString { it.resId.toHex() }})"
     }
 }
