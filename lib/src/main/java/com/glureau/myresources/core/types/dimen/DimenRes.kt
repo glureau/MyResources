@@ -24,4 +24,7 @@ data class DimenRes(val _appContext: Context, val _resourceClassName: String, va
     } catch (t: Throwable) {
         null
     }
+
+    override val definitionForQuery: String
+        get() = "${super.definitionForQuery} $valueFloat $valuePixelSize $valuePixelOffset"
 }

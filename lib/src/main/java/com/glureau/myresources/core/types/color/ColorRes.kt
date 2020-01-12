@@ -5,8 +5,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.glureau.myresources.core.ResourceDefType
 import com.glureau.myresources.core.types.BaseRes
+import com.glureau.myresources.extensions.toHex
 
-data class ColorRes(val _appContext: Context, val _resourceClassName: String, val _resName: String) :
+data class ColorRes(
+    val _appContext: Context,
+    val _resourceClassName: String,
+    val _resName: String
+) :
     BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Color) {
 
     val defaultColor by lazy { color(appContext) ?: 0 }
@@ -25,4 +30,7 @@ data class ColorRes(val _appContext: Context, val _resourceClassName: String, va
     } catch (t: Throwable) {
         null
     }
+
+    override val definitionForQuery: String
+        get() = "${super.definitionForQuery} ${defaultColor.toHex()}"
 }

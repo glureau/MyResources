@@ -4,5 +4,6 @@ import com.glureau.myresources.core.types.BaseRes
 
 class SearchFilter : ResFilter<BaseRes> {
     var query: String? = null
-    override fun filter(res: BaseRes) = query.isNullOrEmpty() || res.toString().contains(query!!)
+    override fun filter(res: BaseRes) =
+        query.isNullOrEmpty() || res.definitionForQuery.toLowerCase().contains(query!!.toLowerCase())
 }

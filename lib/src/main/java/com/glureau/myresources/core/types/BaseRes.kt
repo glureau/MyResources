@@ -12,4 +12,5 @@ open class BaseRes(
 ) {
     val resId: Int = appContext.getIdentifier(resName, resourceDefType)
     val packageName = resourceClassName.substringBefore(".R.")
+    open val definitionForQuery: String = "$resName $resId $packageName"
 }

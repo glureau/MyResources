@@ -12,4 +12,8 @@ data class BoolRes(val _appContext: Context, val _resourceClassName: String, val
     } catch (t: Throwable) {
         null
     }
+
+
+    override val definitionForQuery: String
+        get() = "${super.definitionForQuery} $value"
 }
