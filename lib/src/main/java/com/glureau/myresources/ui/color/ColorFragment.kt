@@ -10,13 +10,13 @@ import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
-class ColorFragment : BaseFragment() {
+class ColorFragment : BaseFragment(), AggregatedColorAdapter.AggregatedColorAdapterListener {
 
     companion object : BaseFragmentCompanion() {
         override val FRAGMENT_TAG = "ColorFragment"
     }
 
-    private val colorAdapter by lazy { AggregatedColorAdapter() }
+    private val colorAdapter by lazy { AggregatedColorAdapter(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,5 +42,10 @@ class ColorFragment : BaseFragment() {
     override fun onPause() {
         ResParser.repository.invalidateSignal = null
         super.onPause()
+    }
+
+    override fun onClick(color: Int) {
+        ColorDetailsDialogFragment.newInstance(color)
+            .show(childFragmentManager, ColorDetailsDialogFragment.TAG)
     }
 }

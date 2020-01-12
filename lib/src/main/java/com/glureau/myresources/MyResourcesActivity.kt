@@ -87,7 +87,6 @@ class MyResourcesActivity : AppCompatActivity() {
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        preparePackageFiltering()
         prepareSearchView()
 
         updateContent(R.id.nav_drawable)
@@ -115,15 +114,11 @@ class MyResourcesActivity : AppCompatActivity() {
             })
     }
 
-    private fun preparePackageFiltering() {
+    private fun preparePackageFiltering(currentPage: NavItem) {
         val options = mutableListOf<String>()
         options += "Auto filtered"
-        val currentPage = navMap.values.firstOrNull { it.title == title }
         ResParser.repository.packages.forEach { pack ->
-            val count = when (currentPage) {
-                null -> pack.totalCount
-                else -> currentPage.resCount(pack)
-            }
+            val count = currentPage.resCount(pack)
             if (count > 0) {
                 options += "${pack.name} ($count)"
             }
@@ -164,6 +159,8 @@ class MyResourcesActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
         findViewById<TextView>(R.id.myr_appbar_title)?.text = nav.title
+
+        preparePackageFiltering(nav)
     }
 
 }

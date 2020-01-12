@@ -16,13 +16,20 @@ import com.glureau.myresources.core.types.color.AggregatedColorRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.extensions.toHex
 
-class AggregatedColorAdapter : ListAdapter<AggregatedColorRes,
-        AggregatedColorAdapter.ViewHolder>(AggregatedResDiffCallback<ColorRes, AggregatedColorRes>()) {
+class AggregatedColorAdapter(
+    private val listener: AggregatedColorAdapterListener
+) :
+    ListAdapter<AggregatedColorRes, AggregatedColorAdapter.ViewHolder>(AggregatedResDiffCallback<ColorRes, AggregatedColorRes>()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemColor: ImageView by lazy { itemView.findViewById<ImageView>(R.id.item_color_view) }
         val itemColorHex: TextView by lazy { itemView.findViewById<TextView>(R.id.item_color_hex) }
         val itemName: TextView by lazy { itemView.findViewById<TextView>(R.id.item_color_name) }
+        val container: View by lazy { itemView.findViewById<View>(R.id.item_color_container) }
+    }
+
+    interface AggregatedColorAdapterListener {
+        fun onClick(color: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,5 +58,9 @@ class AggregatedColorAdapter : ListAdapter<AggregatedColorRes,
         holder.itemColorHex.setTextColor(textColor)
         holder.itemName.text =
             "${agg.resources.joinToString { it.resName }} (id: #${agg.resources.joinToString { it.resId.toHex() }})"
+
+        holder.container.setOnClickListener {
+            listener.onClick(agg.color)
+        }
     }
 }
