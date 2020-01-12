@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
 class BoolFragment : BaseFragment() {
@@ -25,6 +26,7 @@ class BoolFragment : BaseFragment() {
         val root = inflater.inflate(R.layout.myr_fragment_bool, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.bool_list)
         recyclerView.adapter = boolAdapter
+        recyclerView.setDivider(R.drawable.myr_recyclerview_divider)
         return root
     }
 

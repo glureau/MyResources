@@ -7,12 +7,25 @@
 
     <ImageView
         android:id="@+id/item_color_view"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
         android:background="@drawable/myr_transparent_background_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/item_color_hex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/item_color_view"
+        app:layout_constraintStart_toStartOf="@id/item_color_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="#FF0052FF" />
 
     <TextView
         android:id="@+id/item_color_name"
