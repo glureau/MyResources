@@ -47,8 +47,3 @@ fun ImageView.startAndRepeatAnimations() {
         }
     }
 }
-
-fun ImageView.setupTransparentBackground() {
-    val drawable = ContextCompat.getDrawable(context, R.drawable.myr_transparent_background_tileable)!!
-    background = TileDrawable(drawable, Shader.TileMode.REPEAT)
-}

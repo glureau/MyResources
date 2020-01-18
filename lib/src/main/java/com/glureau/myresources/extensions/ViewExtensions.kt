@@ -2,9 +2,14 @@ package com.glureau.myresources.extensions
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.graphics.Shader
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
+import com.glureau.myresources.R
+import com.glureau.myresources.ui.common.TileDrawable
+import java.util.*
 
 
 fun View.expand() {
@@ -45,4 +50,27 @@ private fun View.animateView(initialHeight: Int, targetHeight: Int) {
     valueAnimator.duration = 300
     valueAnimator.interpolator = DecelerateInterpolator()
     valueAnimator.start()
+}
+
+fun View.setupTransparentBackground() {
+    val drawable = ContextCompat.getDrawable(context, R.drawable.myr_transparent_background_tileable)!!
+    background = TileDrawable(drawable, Shader.TileMode.REPEAT)
+}
+
+inline fun <reified T : View> View.filterViews(): List<T> {
+    val filteredViews = mutableListOf<T>()
+    var current: View? = this
+    val stack = ArrayDeque<View>()
+    while (current != null) {
+        if (current is T) {
+            filteredViews.add(current)
+        }
+        if (current is ViewGroup) {
+            (0 until current.childCount).forEach {
+                stack.add((current as ViewGroup).getChildAt(it))
+            }
+        }
+        current = if (stack.isNotEmpty()) stack.pop() else null
+    }
+    return filteredViews
 }
