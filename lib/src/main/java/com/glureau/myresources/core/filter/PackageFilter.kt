@@ -4,6 +4,10 @@ import com.glureau.myresources.core.types.BaseRes
 
 sealed class PackageFilter : ResFilter<BaseRes> {
 
+    object AllPackageFilter : PackageFilter() {
+        override fun filter(res: BaseRes) = true
+    }
+
     object KnownPackageFilter : PackageFilter() {
 
         private val KNOWN_PACKAGES = listOf(
@@ -27,7 +31,7 @@ sealed class PackageFilter : ResFilter<BaseRes> {
         }
     }
 
-    class SpecificPackageFilter(private val packageName: String) : PackageFilter() {
+    class SpecificPackageFilter(val packageName: String) : PackageFilter() {
         override fun filter(res: BaseRes) = res.packageName == packageName
     }
 }

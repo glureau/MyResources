@@ -113,7 +113,8 @@ class MyResourcesActivity : AppCompatActivity() {
                     ResParser.repository.searchQuery(newText)
                     // Auto-close search view when no text
                     if (newText.isNullOrEmpty()) {
-                        searchView.isIconified = true
+                        // TODO: This trick is not working great so far, since the focus is not redirected yet
+                        //searchView.isIconified = true
                     }
                     return true
                 }
@@ -122,12 +123,14 @@ class MyResourcesActivity : AppCompatActivity() {
     }
 
     private fun preparePackageFiltering(currentPage: NavItem) {
+        val selectedFilter = ResParser.repository.packageFilter
         val options = mutableListOf<String>()
-        options += "Auto filtered"
+        options += (if (selectedFilter is PackageFilter.AllPackageFilter) "✓ " else "") + "All packages"
+        options += (if (selectedFilter is PackageFilter.KnownPackageFilter) "✓ " else "") + "Auto filtered"
         ResParser.repository.packages.forEach { pack ->
             val count = currentPage.resCount(pack)
             if (count > 0) {
-                options += "${pack.name} ($count)"
+                options += (if (selectedFilter is PackageFilter.SpecificPackageFilter && selectedFilter.packageName == pack.name) "✓ " else "") + "${pack.name} ($count)"
             }
         }
         val filterView = findViewById<View>(R.id.myr_appbar_filter)
@@ -145,7 +148,8 @@ class MyResourcesActivity : AppCompatActivity() {
         listPopupWindow.isModal = true
         listPopupWindow.setOnItemClickListener { _, _, position, _ ->
             ResParser.repository.packageFilter = when (position) {
-                0 -> PackageFilter.KnownPackageFilter
+                0 -> PackageFilter.AllPackageFilter
+                1 -> PackageFilter.KnownPackageFilter
                 else -> PackageFilter.SpecificPackageFilter(ResParser.repository.packages[position - 1].name)
             }
             listPopupWindow.dismiss()

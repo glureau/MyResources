@@ -1,6 +1,8 @@
 package com.glureau.myresources.core
 
 import android.content.Context
+import com.glureau.myresources.core.aggregator.AggregatedByNameRes
+import com.glureau.myresources.core.aggregator.BaseResNameAggregator
 import com.glureau.myresources.core.aggregator.ResAggregator
 import com.glureau.myresources.core.filter.PackageFilter
 import com.glureau.myresources.core.filter.SearchFilter
@@ -55,7 +57,7 @@ class ResRepository {
     //private val styles = mutableListOf<Any>()
     //private val styleables = mutableListOf<Any>()
 
-    var packageFilter: PackageFilter = PackageFilter.KnownPackageFilter
+    var packageFilter: PackageFilter = PackageFilter.AllPackageFilter
         set(value) {
             field = value
             invalidateSignal?.invoke()
@@ -64,6 +66,8 @@ class ResRepository {
     var dimenSorter: ResSorter<DimenRes> = DimenSorter
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
     val colorAggregator: ResAggregator<ColorRes, AggregatedColorRes> = ColorAggregator()
+    val drawableAggregator: ResAggregator<DrawableRes, AggregatedByNameRes<DrawableRes>> =
+        BaseResNameAggregator()
 
     fun addBool(res: BoolRes) = bools.add(res)
     fun getBools() = bools
@@ -84,9 +88,10 @@ class ResRepository {
         .sortedBy(dimenSorter::sort)
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
-    fun getDrawables() = drawables
+    fun getDrawables(context: Context) = drawables
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
+        .let { drawableAggregator.aggregate(context, it) }
 
     fun addLayout(res: LayoutRes) = layouts.add(res)
     fun getLayouts() = layouts

@@ -10,7 +10,7 @@ import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
-class ColorFragment : BaseFragment(), AggregatedColorAdapter.AggregatedColorAdapterListener {
+class ColorFragment : BaseFragment(), AggregatedColorAdapter.AdapterListener {
 
     companion object : BaseFragmentCompanion() {
         override val FRAGMENT_TAG = "ColorFragment"

@@ -1,5 +1,6 @@
 package com.glureau.myresources.extensions
 
+import android.content.res.Resources
 import android.graphics.Color
 import androidx.core.graphics.ColorUtils
 
@@ -26,4 +27,12 @@ fun Int.textColorFromBackgroundColor(): Int {
     return if ((Color.alpha(this) / 255f) < 0.25f) Color.BLACK else {
         if (lightness > 0.5f) Color.BLACK else Color.WHITE
     }
+}
+
+fun Int.dpToPx(): Int {
+    return (this * Resources.getSystem().displayMetrics.density).toInt()
+}
+
+fun Int.pxToDp(): Int {
+    return (this / Resources.getSystem().displayMetrics.density).toInt()
 }

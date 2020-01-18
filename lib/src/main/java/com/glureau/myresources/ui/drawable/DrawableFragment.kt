@@ -9,14 +9,15 @@ import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
+import com.glureau.myresources.ui.drawable.details.DrawableDetailsDialogFragment
 
-class DrawableFragment : BaseFragment() {
+class DrawableFragment : BaseFragment(), DrawableAdapter.AdapterListener {
 
     companion object : BaseFragmentCompanion() {
         override val FRAGMENT_TAG = "DrawableFragment"
     }
 
-    private val drawableAdapter by lazy { DrawableAdapter() }
+    private val drawableAdapter by lazy { DrawableAdapter(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,9 +33,9 @@ class DrawableFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        drawableAdapter.submitList(ResParser.repository.getDrawables())
+        drawableAdapter.submitList(ResParser.repository.getDrawables(requireContext()))
         ResParser.repository.invalidateSignal = {
-            drawableAdapter.submitList(ResParser.repository.getDrawables())
+            drawableAdapter.submitList(ResParser.repository.getDrawables(requireContext()))
             view?.findViewById<RecyclerView>(R.id.drawable_list)?.smoothScrollToPosition(0)
         }
     }
@@ -42,5 +43,11 @@ class DrawableFragment : BaseFragment() {
     override fun onPause() {
         ResParser.repository.invalidateSignal = null
         super.onPause()
+    }
+
+    override fun onClick(resName: String) {
+        DrawableDetailsDialogFragment.newInstance(resName)
+            .show(childFragmentManager, DrawableDetailsDialogFragment.TAG)
+
     }
 }

@@ -17,7 +17,7 @@ import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.extensions.toHex
 
 class AggregatedColorAdapter(
-    private val listener: AggregatedColorAdapterListener
+    private val listener: AdapterListener
 ) :
     ListAdapter<AggregatedColorRes, AggregatedColorAdapter.ViewHolder>(AggregatedResDiffCallback<ColorRes, AggregatedColorRes>()) {
 
@@ -28,7 +28,7 @@ class AggregatedColorAdapter(
         val container: View by lazy { itemView.findViewById<View>(R.id.item_color_container) }
     }
 
-    interface AggregatedColorAdapterListener {
+    interface AdapterListener {
         fun onClick(color: Int)
     }
 
