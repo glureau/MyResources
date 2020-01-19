@@ -9,6 +9,7 @@ import com.glureau.myresources.core.filter.SearchFilter
 import com.glureau.myresources.core.sorter.InverseSorter
 import com.glureau.myresources.core.sorter.ResSorter
 import com.glureau.myresources.core.types.bool.BoolRes
+import com.glureau.myresources.core.types.bool.FontRes
 import com.glureau.myresources.core.types.color.AggregatedColorRes
 import com.glureau.myresources.core.types.color.ColorAggregator
 import com.glureau.myresources.core.types.color.ColorRes
@@ -32,11 +33,12 @@ class ResRepository {
                 val colorCount = colors.count { it.packageName == name }
                 val dimenCount = dimens.count { it.packageName == name }
                 val drawableCount = drawables.count { it.packageName == name }
+                val fontCount = fonts.count { it.packageName == name }
                 val layoutCount = layouts.count { it.packageName == name }
                 Package(
                     name,
-                    boolCount, colorCount, dimenCount, drawableCount, layoutCount,
-                    totalCount = boolCount + colorCount + dimenCount + drawableCount + layoutCount
+                    boolCount, colorCount, dimenCount, drawableCount, fontCount, layoutCount,
+                    totalCount = boolCount + colorCount + dimenCount + drawableCount + fontCount + layoutCount
                 )
             }
             .sortedBy { -it.totalCount }
@@ -49,6 +51,7 @@ class ResRepository {
     private val colors = mutableListOf<ColorRes>()
     private val dimens = mutableListOf<DimenRes>()
     private val drawables = mutableListOf<DrawableRes>()
+    private val fonts = mutableListOf<FontRes>()
     //private val ids = mutableListOf<Any>()
     //private val interpolators = mutableListOf<Any>()
     private val layouts = mutableListOf<LayoutRes>()
@@ -96,6 +99,11 @@ class ResRepository {
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
         .let { drawableAggregator.aggregate(context, it) }
+
+    fun addFont(res: FontRes) = fonts.add(res)
+    fun getFonts(context: Context) = fonts
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
 
     fun addLayout(res: LayoutRes) = layouts.add(res)
     fun getLayouts() = layouts

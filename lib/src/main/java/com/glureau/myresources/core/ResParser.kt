@@ -3,6 +3,7 @@ package com.glureau.myresources.core
 import android.content.Context
 import android.util.Log
 import com.glureau.myresources.core.types.bool.BoolRes
+import com.glureau.myresources.core.types.bool.FontRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
@@ -41,6 +42,9 @@ object ResParser {
                     }
                     ResourceDefType.Drawable.typeName -> internalClass.fields.forEach {
                         repository.addDrawable(DrawableRes(appContext, resourceClassName, it.name))
+                    }
+                    ResourceDefType.Font.typeName -> internalClass.fields.forEach {
+                        repository.addFont(FontRes(appContext, resourceClassName, it.name))
                     }
                     ResourceDefType.Layout.typeName -> internalClass.fields.forEach {
                         repository.addLayout(LayoutRes(appContext, resourceClassName, it.name))

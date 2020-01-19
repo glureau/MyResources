@@ -21,6 +21,10 @@
             android:icon="@drawable/myr_ic_image_white_24dp"
             android:title="@string/menu_drawable" />
         <item
+            android:id="@+id/nav_font"
+            android:icon="@drawable/myr_ic_font_white_24dp"
+            android:title="@string/menu_font" />
+        <item
             android:id="@+id/nav_layout"
             android:icon="@drawable/myr_ic_layout_white_24dp"
             android:title="@string/menu_layout" />
