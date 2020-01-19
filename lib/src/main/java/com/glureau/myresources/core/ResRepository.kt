@@ -13,6 +13,8 @@ import com.glureau.myresources.core.types.color.AggregatedColorRes
 import com.glureau.myresources.core.types.color.ColorAggregator
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.color.ColorSorter
+import com.glureau.myresources.core.types.dimen.AggregatedDimenRes
+import com.glureau.myresources.core.types.dimen.DimenAggregator
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.dimen.DimenSorter
 import com.glureau.myresources.core.types.drawable.DrawableRes
@@ -64,8 +66,9 @@ class ResRepository {
         }
     private val searchFilter = SearchFilter()
     var dimenSorter: ResSorter<DimenRes> = DimenSorter
+    var dimenAggregator: ResAggregator<DimenRes, AggregatedDimenRes> = DimenAggregator
     var colorSorter: ResSorter<ColorRes> = InverseSorter(ColorSorter.HueColorSorter)
-    val colorAggregator: ResAggregator<ColorRes, AggregatedColorRes> = ColorAggregator()
+    val colorAggregator: ResAggregator<ColorRes, AggregatedColorRes> = ColorAggregator
     val drawableAggregator: ResAggregator<DrawableRes, AggregatedByNameRes<DrawableRes>> =
         BaseResNameAggregator()
 
@@ -82,10 +85,11 @@ class ResRepository {
         .let { colorAggregator.aggregate(context, it) }
 
     fun addDimen(res: DimenRes) = dimens.add(res)
-    fun getDimens() = dimens
+    fun getDimens(context: Context) = dimens
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
         .sortedBy(dimenSorter::sort)
+        .let { dimenAggregator.aggregate(context, it) }
 
     fun addDrawable(res: DrawableRes) = drawables.add(res)
     fun getDrawables(context: Context) = drawables

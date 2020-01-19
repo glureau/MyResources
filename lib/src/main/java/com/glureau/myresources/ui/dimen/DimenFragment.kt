@@ -32,9 +32,9 @@ class DimenFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        dimenAdapter.submitList(ResParser.repository.getDimens())
+        dimenAdapter.submitList(ResParser.repository.getDimens(requireContext()))
         ResParser.repository.invalidateSignal = {
-            dimenAdapter.submitList(ResParser.repository.getDimens())
+            dimenAdapter.submitList(ResParser.repository.getDimens(requireContext()))
             view?.findViewById<RecyclerView>(R.id.bool_list)?.smoothScrollToPosition(0)
         }
     }

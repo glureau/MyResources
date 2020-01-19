@@ -7,6 +7,12 @@ import com.glureau.myresources.core.types.BaseRes
 data class DimenRes(val _appContext: Context, val _resourceClassName: String, val _resName: String) :
     BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Dimen) {
 
+    val valueString: String? = try {
+        appContext.getString(resId)
+    } catch (t: Throwable) {
+        null
+    }
+
     val valueFloat: Float? = try {
         appContext.resources.getDimension(resId)
     } catch (t: Throwable) {
@@ -25,6 +31,25 @@ data class DimenRes(val _appContext: Context, val _resourceClassName: String, va
         null
     }
 
+    enum class UNIT {
+        DP, SP, PX, PERCENT, NONE
+    }
+
+    val rawValue: Float? = try {
+        valueString?.replace(Regex("[a-zA-Z%]*"), "")?.toFloat()
+    } catch (t: Throwable) {
+        null
+    }
+
+    val unit: UNIT = when {
+        valueString.isNullOrBlank() -> UNIT.NONE
+        valueString.contains("sp") -> UNIT.SP
+        valueString.contains("dip") -> UNIT.DP
+        valueString.contains("px") -> UNIT.PX
+        valueString.contains("%") -> UNIT.PERCENT
+        else -> UNIT.NONE
+    }
+
     override val definitionForQuery: String
-        get() = "${super.definitionForQuery} $valueFloat $valuePixelSize $valuePixelOffset"
+        get() = "${super.definitionForQuery} $valueString $valueFloat $valuePixelSize $valuePixelOffset $rawValue $unit"
 }

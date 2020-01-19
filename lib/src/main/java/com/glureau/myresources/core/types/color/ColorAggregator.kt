@@ -11,7 +11,7 @@ data class AggregatedColorRes(
     override val aggregatedBy: String = color.toHex()
 ) : AggregatedRes<ColorRes>
 
-class ColorAggregator : ResAggregator<ColorRes, AggregatedColorRes> {
+object ColorAggregator : ResAggregator<ColorRes, AggregatedColorRes> {
     override fun aggregate(context: Context, list: List<ColorRes>): List<AggregatedColorRes> {
         return list.groupBy { it.color(context) ?: it.defaultColor }
             .map { AggregatedColorRes(it.key, it.value) }
