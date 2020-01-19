@@ -9,14 +9,16 @@ import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
+import com.glureau.myresources.ui.dimen.details.DimenDetailsDialogFragment
+import com.glureau.myresources.ui.drawable.DrawableAdapter
 
-class DimenFragment : BaseFragment() {
+class DimenFragment : BaseFragment(), DrawableAdapter.AdapterListener {
 
     companion object : BaseFragmentCompanion() {
         override val FRAGMENT_TAG = "DimenFragment"
     }
 
-    private val dimenAdapter by lazy { DimenAdapter() }
+    private val dimenAdapter by lazy { DimenAdapter(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,5 +44,10 @@ class DimenFragment : BaseFragment() {
     override fun onPause() {
         ResParser.repository.invalidateSignal = null
         super.onPause()
+    }
+
+    override fun onClick(valueStr: String) {
+        DimenDetailsDialogFragment.newInstance(valueStr)
+            .show(childFragmentManager, DimenDetailsDialogFragment.TAG)
     }
 }

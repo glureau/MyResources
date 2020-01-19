@@ -48,6 +48,5 @@ class DrawableFragment : BaseFragment(), DrawableAdapter.AdapterListener {
     override fun onClick(resName: String) {
         DrawableDetailsDialogFragment.newInstance(resName)
             .show(childFragmentManager, DrawableDetailsDialogFragment.TAG)
-
     }
 }

@@ -31,7 +31,7 @@ class DrawableAdapter(
     }
 
     interface AdapterListener {
-        fun onClick(resName: String)
+        fun onClick(valueStr: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

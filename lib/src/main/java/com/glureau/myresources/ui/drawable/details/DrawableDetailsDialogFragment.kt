@@ -34,12 +34,13 @@ class DrawableDetailsDialogFragment : DialogFragment() {
 
     private val resName by lazy { requireArguments().getString(ARG_NAME) }
 
-    val res by lazy {
+    private val agg by lazy {
         ResParser.repository.getDrawables(requireContext()).first { it.aggregatedBy == resName }
     }
+    private val res by lazy { agg.resources.first() }
 
     private val adapter =
-        DrawableIDetailsAdapter()
+        DrawableDetailsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +54,7 @@ class DrawableDetailsDialogFragment : DialogFragment() {
 
         view.findViewById<TextView>(R.id.myr_details_drawable_title).text = resName
         val preview = view.findViewById<ImageView>(R.id.myr_details_drawable_preview)
-        preview.setImageResource(res.resources.first().resId)
+        preview.setImageResource(res.resId)
         preview.setupTransparentBackground()
         preview.startAndRepeatAnimations()
 
@@ -69,7 +70,7 @@ class DrawableDetailsDialogFragment : DialogFragment() {
 
         view.setOnClickListener {
             FullscreenDrawablePreview.newInstance(
-                res.resources.first().resId
+                res.resId
             ).show(
                 childFragmentManager,
                 FullscreenDrawablePreview.TAG
@@ -80,7 +81,7 @@ class DrawableDetailsDialogFragment : DialogFragment() {
         recyclerView.adapter = adapter
         recyclerView.setDivider(R.drawable.myr_recyclerview_divider)
 
-        adapter.submitList(res.resources)
+        adapter.submitList(agg.resources)
     }
 
     override fun onStart() {

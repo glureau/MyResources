@@ -10,8 +10,8 @@ import com.glureau.myresources.R
 import com.glureau.myresources.core.types.BaseResDiffCallback
 import com.glureau.myresources.core.types.drawable.DrawableRes
 
-class DrawableIDetailsAdapter :
-    ListAdapter<DrawableRes, DrawableIDetailsAdapter.ViewHolder>(BaseResDiffCallback()) {
+class DrawableDetailsAdapter :
+    ListAdapter<DrawableRes, DrawableDetailsAdapter.ViewHolder>(BaseResDiffCallback()) {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemText: TextView by lazy { itemView.findViewById<TextView>(R.id.item_generic_text) }

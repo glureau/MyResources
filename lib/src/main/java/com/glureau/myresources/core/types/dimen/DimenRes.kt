@@ -31,8 +31,12 @@ data class DimenRes(val _appContext: Context, val _resourceClassName: String, va
         null
     }
 
-    enum class UNIT {
-        DP, SP, PX, PERCENT, NONE
+    enum class UNIT(val definition: String) {
+        DP("dp/dip (density-independent pixels)"),
+        SP("sp (font size)"),
+        PX("px (pixel count)"),
+        PERCENT("% (percent)"),
+        NONE("(no unit found)")
     }
 
     val rawValue: Float? = try {
