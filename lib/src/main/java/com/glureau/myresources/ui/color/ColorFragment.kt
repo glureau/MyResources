@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.betterSmoothScrollToPosition
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
@@ -35,7 +36,7 @@ class ColorFragment : BaseFragment(), AggregatedColorAdapter.AdapterListener {
         colorAdapter.submitList(ResParser.repository.getColors(requireContext()))
         ResParser.repository.invalidateSignal = {
             colorAdapter.submitList(ResParser.repository.getColors(requireContext()))
-            view?.findViewById<RecyclerView>(R.id.color_list)?.smoothScrollToPosition(0)
+            view?.findViewById<RecyclerView>(R.id.color_list)?.betterSmoothScrollToPosition(0)
         }
     }
 

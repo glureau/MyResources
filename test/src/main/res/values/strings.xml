@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">The test app</string>
+    <string name="placeholder" />
+    <string name="id.with.dot">id.with.dot</string>
+    <string name="id_with_underscore">id_with_underscore</string>
+    <string name="id.with_mixed.underscore_and.dot">id.with_mixed.underscore_and.dot</string>
 </resources>

@@ -5,15 +5,21 @@ import com.glureau.myresources.core.ResourceDefType
 import com.glureau.myresources.core.types.BaseRes
 
 data class StringRes(
-    val _appContext: Context,
+    private val _appContext: Context,
     val _resourceClassName: String,
     val _resName: String
-) :
-    BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Strings) {
+) : BaseRes(_appContext, _resourceClassName, _resName, ResourceDefType.Strings) {
 
-    val value = _appContext.getString(resId)
+    val value: String = try {
+        _appContext.getString(resId)
+    } catch (t: Throwable) {
+        "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️\n" +
+                "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️\n" +
+                "Cannot load String '$_resName' because ${t.message}\n" +
+                "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️\n" +
+                "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️\n"
+    }
 
     override val definitionForQuery: String
-        get() = "${super.definitionForQuery} $value"
-
+        get() = "${super.definitionForQuery} ${if (value.isEmpty()) "EMPTY" else value}"
 }

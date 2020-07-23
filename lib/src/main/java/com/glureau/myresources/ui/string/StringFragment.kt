@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.betterSmoothScrollToPosition
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
@@ -35,7 +36,7 @@ class StringFragment : BaseFragment() {
         stringAdapter.submitList(ResParser.repository.getStrings())
         ResParser.repository.invalidateSignal = {
             stringAdapter.submitList(ResParser.repository.getStrings())
-            view?.findViewById<RecyclerView>(R.id.string_list)?.smoothScrollToPosition(0)
+            view?.findViewById<RecyclerView>(R.id.string_list)?.betterSmoothScrollToPosition(0)
         }
     }
 

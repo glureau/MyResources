@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.betterSmoothScrollToPosition
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 import com.glureau.myresources.ui.dimen.details.DimenDetailsDialogFragment
@@ -37,7 +38,7 @@ class DimenFragment : BaseFragment(), DrawableAdapter.AdapterListener {
         dimenAdapter.submitList(ResParser.repository.getDimens(requireContext()))
         ResParser.repository.invalidateSignal = {
             dimenAdapter.submitList(ResParser.repository.getDimens(requireContext()))
-            view?.findViewById<RecyclerView>(R.id.bool_list)?.smoothScrollToPosition(0)
+            view?.findViewById<RecyclerView>(R.id.bool_list)?.betterSmoothScrollToPosition(0)
         }
     }
 

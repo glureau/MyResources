@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.betterSmoothScrollToPosition
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 import com.glureau.myresources.ui.drawable.details.DrawableDetailsDialogFragment
@@ -36,7 +37,7 @@ class DrawableFragment : BaseFragment(), DrawableAdapter.AdapterListener {
         drawableAdapter.submitList(ResParser.repository.getDrawables(requireContext()))
         ResParser.repository.invalidateSignal = {
             drawableAdapter.submitList(ResParser.repository.getDrawables(requireContext()))
-            view?.findViewById<RecyclerView>(R.id.drawable_list)?.smoothScrollToPosition(0)
+            view?.findViewById<RecyclerView>(R.id.drawable_list)?.betterSmoothScrollToPosition(0)
         }
     }
 

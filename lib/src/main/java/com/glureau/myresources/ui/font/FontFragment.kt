@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.ResParser
+import com.glureau.myresources.extensions.betterSmoothScrollToPosition
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
@@ -42,7 +43,7 @@ class FontFragment : BaseFragment() {
         adapter.submitList(ResParser.repository.getFonts())
         ResParser.repository.invalidateSignal = {
             adapter.submitList(ResParser.repository.getFonts())
-            view?.findViewById<RecyclerView>(R.id.font_list)?.smoothScrollToPosition(0)
+            view?.findViewById<RecyclerView>(R.id.font_list)?.betterSmoothScrollToPosition(0)
         }
     }
 
