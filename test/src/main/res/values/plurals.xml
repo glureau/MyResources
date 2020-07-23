@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="a_plural">
+        <item quantity="zero">there is nothing here</item>
+        <item quantity="one">there is something here</item>
+        <item quantity="other">More than one here (%d)</item>
+    </plurals>
+</resources>

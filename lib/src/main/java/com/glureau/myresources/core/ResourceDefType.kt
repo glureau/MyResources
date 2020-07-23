@@ -6,5 +6,6 @@ enum class ResourceDefType(val typeName: String) {
     Dimen("dimen"),
     Drawable("drawable"),
     Font("font"),
-    Layout("layout")
+    Layout("layout"),
+    Strings("string")
 }

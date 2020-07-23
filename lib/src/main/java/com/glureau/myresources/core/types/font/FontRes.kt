@@ -1,4 +1,4 @@
-package com.glureau.myresources.core.types.bool
+package com.glureau.myresources.core.types.font
 
 import android.content.Context
 import android.graphics.Typeface

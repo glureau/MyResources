@@ -1,4 +1,4 @@
-package com.glureau.myresources.ui.font
+package com.glureau.myresources.ui.string
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,39 +10,32 @@ import com.glureau.myresources.core.ResParser
 import com.glureau.myresources.extensions.setDivider
 import com.glureau.myresources.ui.BaseFragment
 
-class FontFragment : BaseFragment() {
+class StringFragment : BaseFragment() {
 
     companion object : BaseFragmentCompanion() {
-        override val FRAGMENT_TAG = "FontFragment"
+        override val FRAGMENT_TAG = "StringFragment"
     }
 
-    private val adapter by lazy {
-        FontAdapter(object : FontAdapter.FontAdapterListener {
-            override fun onClick(fontRes: Int) {
-                //FontDetailsDialogFragment.newInstance(fontRes)
-                //    .show(childFragmentManager, FontDetailsDialogFragment.TAG)
-            }
-        })
-    }
+    private val stringAdapter by lazy { StringAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.myr_fragment_font, container, false)
-        val recyclerView: RecyclerView = root.findViewById(R.id.font_list)
-        recyclerView.adapter = adapter
+        val root = inflater.inflate(R.layout.myr_fragment_string, container, false)
+        val recyclerView: RecyclerView = root.findViewById(R.id.string_list)
+        recyclerView.adapter = stringAdapter
         recyclerView.setDivider(R.drawable.myr_recyclerview_divider)
         return root
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.submitList(ResParser.repository.getFonts())
+        stringAdapter.submitList(ResParser.repository.getStrings())
         ResParser.repository.invalidateSignal = {
-            adapter.submitList(ResParser.repository.getFonts())
-            view?.findViewById<RecyclerView>(R.id.font_list)?.smoothScrollToPosition(0)
+            stringAdapter.submitList(ResParser.repository.getStrings())
+            view?.findViewById<RecyclerView>(R.id.string_list)?.smoothScrollToPosition(0)
         }
     }
 
@@ -50,4 +43,5 @@ class FontFragment : BaseFragment() {
         ResParser.repository.invalidateSignal = null
         super.onPause()
     }
+
 }

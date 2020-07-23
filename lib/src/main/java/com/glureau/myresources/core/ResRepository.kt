@@ -9,7 +9,6 @@ import com.glureau.myresources.core.filter.SearchFilter
 import com.glureau.myresources.core.sorter.InverseSorter
 import com.glureau.myresources.core.sorter.ResSorter
 import com.glureau.myresources.core.types.bool.BoolRes
-import com.glureau.myresources.core.types.bool.FontRes
 import com.glureau.myresources.core.types.color.AggregatedColorRes
 import com.glureau.myresources.core.types.color.ColorAggregator
 import com.glureau.myresources.core.types.color.ColorRes
@@ -19,7 +18,9 @@ import com.glureau.myresources.core.types.dimen.DimenAggregator
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.dimen.DimenSorter
 import com.glureau.myresources.core.types.drawable.DrawableRes
+import com.glureau.myresources.core.types.font.FontRes
 import com.glureau.myresources.core.types.layout.LayoutRes
+import com.glureau.myresources.core.types.string.StringRes
 
 class ResRepository {
 
@@ -35,10 +36,11 @@ class ResRepository {
                 val drawableCount = drawables.count { it.packageName == name }
                 val fontCount = fonts.count { it.packageName == name }
                 val layoutCount = layouts.count { it.packageName == name }
+                val stringCount = strings.count { it.packageName == name }
                 Package(
                     name,
-                    boolCount, colorCount, dimenCount, drawableCount, fontCount, layoutCount,
-                    totalCount = boolCount + colorCount + dimenCount + drawableCount + fontCount + layoutCount
+                    boolCount, colorCount, dimenCount, drawableCount, fontCount, layoutCount, stringCount,
+                    totalCount = boolCount + colorCount + dimenCount + drawableCount + fontCount + layoutCount + stringCount
                 )
             }
             .sortedBy { -it.totalCount }
@@ -52,13 +54,15 @@ class ResRepository {
     private val dimens = mutableListOf<DimenRes>()
     private val drawables = mutableListOf<DrawableRes>()
     private val fonts = mutableListOf<FontRes>()
+
     //private val ids = mutableListOf<Any>()
     //private val interpolators = mutableListOf<Any>()
     private val layouts = mutableListOf<LayoutRes>()
+
     //private val menus = mutableListOf<Any>()
     //private val mipmaps = mutableListOf<Any>()
     //private val navigations = mutableListOf<Any>()
-    //private val strings = mutableListOf<Any>()
+    private val strings = mutableListOf<StringRes>()
     //private val styles = mutableListOf<Any>()
     //private val styleables = mutableListOf<Any>()
 
@@ -101,12 +105,17 @@ class ResRepository {
         .let { drawableAggregator.aggregate(context, it) }
 
     fun addFont(res: FontRes) = fonts.add(res)
-    fun getFonts(context: Context) = fonts
+    fun getFonts() = fonts
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
 
     fun addLayout(res: LayoutRes) = layouts.add(res)
     fun getLayouts() = layouts
+        .filter(searchFilter::filter)
+        .filter(packageFilter::filter)
+
+    fun addString(res: StringRes) = strings.add(res)
+    fun getStrings() = strings
         .filter(searchFilter::filter)
         .filter(packageFilter::filter)
 

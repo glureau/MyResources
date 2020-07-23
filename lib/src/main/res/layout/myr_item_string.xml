@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_string_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25"
+        tools:text="abc_ok" />
+
+    <TextView
+        android:id="@+id/item_string_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textStyle="bold|italic"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_string_name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Value: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam et malesuada libero. Duis sagittis lectus sit amet gravida aliquam. Aenean porttitor maximus erat et porttitor. Nullam pellentesque iaculis odio, at aliquam turpis egestas at. Vestibulum posuere justo ac nunc scelerisque interdum. Quisque pulvinar aliquet massa eget interdum. Maecenas sed elit odio. Duis porta sem at ipsum ultricies, a mollis mi iaculis. Ut ut sapien vitae magna malesuada finibus in sed diam. Fusce varius accumsan neque sed semper. Proin gravida, nibh vel scelerisque facilisis, nisi leo vulputate lacus, non vestibulum massa nunc quis tortor. Nam sagittis at nunc id dictum. Cras vel arcu sed magna vehicula blandit a vitae ligula. Proin eu elit ante. Nullam elementum justo ac volutpat sodales. Mauris mattis felis tortor, sit amet cursus lectus auctor nec." />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

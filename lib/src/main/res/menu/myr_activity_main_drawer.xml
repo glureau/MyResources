@@ -28,6 +28,10 @@
             android:id="@+id/nav_layout"
             android:icon="@drawable/myr_ic_layout_white_24dp"
             android:title="@string/menu_layout" />
+        <item
+            android:id="@+id/nav_string"
+            android:icon="@drawable/myr_ic_baseline_short_text_24dp"
+            android:title="@string/menu_string" />
     </group>
 
     <item android:title="Advanced">

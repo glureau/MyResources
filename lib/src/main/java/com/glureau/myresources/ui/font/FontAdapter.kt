@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.glureau.myresources.R
 import com.glureau.myresources.core.types.BaseResDiffCallback
-import com.glureau.myresources.core.types.bool.FontRes
+import com.glureau.myresources.core.types.font.FontRes
 import com.glureau.myresources.extensions.toHex
 
 class FontAdapter(private val listener: FontAdapterListener) :

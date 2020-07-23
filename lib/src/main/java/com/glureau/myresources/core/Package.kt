@@ -8,5 +8,6 @@ data class Package(
     val drawableCount: Int,
     val fontCount: Int,
     val layoutCount: Int,
+    val stringCount: Int,
     val totalCount: Int
 )

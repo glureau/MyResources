@@ -3,11 +3,12 @@ package com.glureau.myresources.core
 import android.content.Context
 import android.util.Log
 import com.glureau.myresources.core.types.bool.BoolRes
-import com.glureau.myresources.core.types.bool.FontRes
 import com.glureau.myresources.core.types.color.ColorRes
 import com.glureau.myresources.core.types.dimen.DimenRes
 import com.glureau.myresources.core.types.drawable.DrawableRes
+import com.glureau.myresources.core.types.font.FontRes
 import com.glureau.myresources.core.types.layout.LayoutRes
+import com.glureau.myresources.core.types.string.StringRes
 import dalvik.system.BaseDexClassLoader
 import dalvik.system.DexFile
 import java.lang.reflect.Field
@@ -49,6 +50,9 @@ object ResParser {
                     ResourceDefType.Layout.typeName -> internalClass.fields.forEach {
                         repository.addLayout(LayoutRes(appContext, resourceClassName, it.name))
                     }
+                    ResourceDefType.Strings.typeName -> internalClass.fields.forEach {
+                        repository.addString(StringRes(appContext, resourceClassName, it.name))
+                    }
                 }
             }
         Log.e("MyResources", "--------------------------------- READY")
@@ -65,6 +69,7 @@ object ResParser {
         val pathList = pathListField.get(classLoader) // Type is DexPathList
 
         val dexElementsField = field("dalvik.system.DexPathList", "dexElements")
+
         @Suppress("UNCHECKED_CAST")
         val dexElements =
             dexElementsField.get(pathList) as Array<Any> // Type is Array<DexPathList.Element>
